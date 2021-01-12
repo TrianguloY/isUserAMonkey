@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">isUserAMonkey &amp; isUserAGoat</string>
+    <string name="about">App developed by [[TrianguloY]].\nThe source code of the app is available on [[GitHub]].\n\nSpecial thanks to StackOverflow \'[[proper-use-cases-for-android-usermanager-isuseragoat]]\' and \'[[strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is]]\' for the detailed information. Check also [[Android-Documentation-Easter-Eggs]] where you can find even more easter eggs!\n\nThe monkey emoji in the icon was extracted from the [[Noto Emoji]] font.</string>
+
+    <string name="expand">Show detailed explanation…</string>
+    <string name="press">Press the \'run\' button above to execute the function</string>
+    <string name="unavailable">unavailable</string>
+    <string name="no_browser">Can\'t open links, is a browser installed?</string>
+
+    <string name="m_function">ActivityManager.[[isUserAMonkey]]()</string>
+    <string name="m_summary">The android SDK contains a strange function called \'[[isUserAMonkey]]\'.\nAre you a Monkey? Let\'s find out!</string>
+    <string name="m_explanation">According to the [[isUserAMonkey|official documentation]]:\n\n\"Returns \"true\" if the user interface is currently being messed with by a monkey.\"\n\nInternally this function checks for a test suite program, called \'[[monkey]]\', that tries to press randomly on the screen (like a monkey). This is usually used for automatic tests, so this function could be used to see if such test is running or not.</string>
+    <string name="m_true">The function returned true, you are a monkey!\nThis means that you are using a testing device with the \'[[monkey]]\' testing suite program that presses randomly on the screen. Or perhaps your ROM did this on purpose?</string>
+    <string name="m_false">The function returned false, this is the expected result.\nThis means that you are not using a testing device with the \'[[monkey]]\' testing suite program that presses randomly on the screen.</string>
+    <string name="m_crash">For some reason the function crashed, this was unexpected, as this function should exists and run correctly. Maybe your ROM messed it somehow?</string>
+
+    <string name="g_function">userManager.[[isUserAGoat]]()</string>
+    <string name="g_summary">The Android SDK also contains another strange function called \'[[isUserAGoat]]\'.\nAre you a Goat? Press to check!</string>
+    <string name="g_explanation">This function, which was added in Android 4.2 (previously it didn\'t exist) was, according to the [[isUserAGoat|official documentation]]:\n\n\"Used to determine whether the user making this call is subject to teleportations.\nReturns whether the user making this call is a goat.\".\n\nOriginally the function always returned false, which could had been used as an internal joke, or an easter egg, or perhaps as a tool for coding purposes (the compiler removes code which is known to never execute, like \'if(false)…\' but sometimes you do need that code in the final app, so calling instead a function avoids the compiler code deletion process).\n\nWhen Android 5.0 was released, this function changed to check whether the user had installed the \'[[Goat Simulator]]\' app, probably to confirm the joke, with the message:\n\"As of LOLLIPOP, this method can now automatically identify goats using advanced goat recognition technology.\"\n\nStrangely, when Android 11 released, this function was changed again to always return false with description\n\"As of R, this method always returns false in order to protect goat privacy.\"\nMaybe because it was messing with some internal tooling or used incorrectly? I don\'t know.</string>
+    <string name="g_lollipop_true">This was unexpected! You are using a device with Android version between 4.2 and 5.0, where this function was hardcoded to always return false. But it returned true?? Maybe you are using a ROM which changed it?</string>
+    <string name="g_lollipop_false">You are using a device with Android version between 4.2 and 5.0, where this function was hardcoded to always return false, so this was the expected result.</string>
+    <string name="g_true">You are using a device with Android between 5.0 and 11.0, where a \'true\' result means that you have the \'[[Goat Simulator]]\' app installed!</string>
+    <string name="g_false">You are using a device with Android between 5.0 and 11.0, where a \'false\' result means that you don\'t have the \'[[Goat Simulator]]\' app installed.</string>
+    <string name="g_r_true">This was unexpected!\nYou are using a device with Android version above 11.0, where this function was hardcoded to always return false. But it returned true?? Maybe you are using a ROM which changed it? Or a future Android version where it was changed again??</string>
+    <string name="g_r_false">You are using a device with Android version above 11.0, where this function was hardcoded to always return false, so this was the expected result.</string>
+    <string name="g_unavailable">The function is unavailable on Android below 4.2, so unfortunately it crashes when you try to run it.</string>
+    <string name="g_crash">This was unexpected, you are using a device with Android below 4.2 where this function shouldn\'t exist, but it does? Perhaps you are using a ROM which decided to implement it.</string>
+</resources>
