@@ -1,0 +1,1 @@
+The android sdk has strange functions called 'isUserAMonkey' and 'isUserAGoat'
