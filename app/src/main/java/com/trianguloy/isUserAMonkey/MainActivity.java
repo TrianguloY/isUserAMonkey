@@ -186,7 +186,10 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             result.setText(Boolean.toString(isUserAGoat));
 
             // comment
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                // should have crashed
+                comment.setText(R.string.g_jb);
+            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 // pre lollipop, always return false
                 if (isUserAGoat) {
                     comment.setText(R.string.g_lollipop_true);
