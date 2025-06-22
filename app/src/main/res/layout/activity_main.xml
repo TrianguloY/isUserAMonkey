@@ -19,6 +19,17 @@
             android:padding="5dp"
             android:text="@string/m_summary" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray" />
+
         <TextView
             android:id="@+id/m_expand"
             android:layout_width="match_parent"
@@ -37,6 +48,17 @@
             android:text="@string/m_explanation"
             android:visibility="gone"
             tools:visibility="visible" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,7 +86,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1" />
+
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/m_comment"
@@ -78,14 +113,25 @@
             android:layout_height="3dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
-            android:background="@android:color/darker_gray"
-            android:paddingTop="25dp" />
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="@string/g_summary" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/g_expand"
@@ -105,6 +151,18 @@
             android:text="@string/g_explanation"
             android:visibility="gone"
             tools:visibility="visible" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -134,6 +192,18 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
+
         <TextView
             android:id="@+id/g_comment"
             android:layout_width="match_parent"
@@ -146,8 +216,7 @@
             android:layout_height="3dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="25dp"
-            android:background="@android:color/darker_gray"
-            android:paddingTop="25dp" />
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:layout_width="match_parent"
