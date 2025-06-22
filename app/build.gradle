@@ -4,7 +4,6 @@ plugins {
 
 android {
     compileSdkVersion 35
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.trianguloy.isUserAMonkey"
@@ -25,6 +24,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.trianguloy.isUserAMonkey'
 }
 
 dependencies {
