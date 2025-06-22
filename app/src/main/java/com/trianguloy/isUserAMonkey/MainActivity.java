@@ -44,6 +44,8 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         links.put("isUserAGoat", "https://developer.android.com/reference/android/os/UserManager.html#isUserAGoat()");
         links.put("Goat Simulator", "https://play.google.com/store/apps/details?id=com.coffeestainstudios.goatsimulator");
 
+        links.put("DISALLOW_FUN", "https://developer.android.com/reference/android/os/UserManager.html#DISALLOW_FUN");
+
         links.put("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165");
         links.put("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461");
         links.put("Android-Documentation-Easter-Eggs", "https://github.com/vitorOta/Android-Documentation-Easter-Eggs");
@@ -75,22 +77,19 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
      */
     public void onButtonClick(View view) {
         switch (view.getId()) {
-            case R.id.m_run:
-                // run the isUserAMonkey function
-                runMonkey();
-                break;
-            case R.id.g_run:
-                // run the isUserAGoat function
-                runGoat();
-                break;
-            case R.id.m_expand:
-                // show details for the isUserAMonkey function
-                swap(view, R.id.m_details);
-                break;
-            case R.id.g_expand:
-                // show details for the isUserAGoat function
-                swap(view, R.id.g_details);
-                break;
+            // run the isUserAMonkey function
+            case R.id.m_run -> runMonkey();
+            // run the isUserAGoat function
+            case R.id.g_run -> runGoat();
+            // run the DISALLOW_FUN function
+            case R.id.f_run -> runDisallowFun();
+
+            // show details for the isUserAMonkey function
+            case R.id.m_expand -> swap(view, R.id.m_details);
+            // show details for the isUserAGoat function
+            case R.id.g_expand -> swap(view, R.id.g_details);
+            // show details for the DISALLOW FUN function
+            case R.id.f_expand -> swap(view, R.id.f_details);
         }
     }
 
@@ -232,6 +231,66 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         ClickableLinks.linkify(result, this);
         ClickableLinks.linkify(comment, this);
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.M) // to suppress the wanted unavailable error
+    private void runDisallowFun() {
+
+        // views
+        TextView result = this.findViewById(R.id.f_result);
+        TextView comment = this.findViewById(R.id.f_comment);
+
+        try {
+
+            // run
+            var disallowFun = ((UserManager) getSystemService(Context.USER_SERVICE)).hasUserRestriction(UserManager.DISALLOW_FUN); // <-- This!
+
+            // result
+            result.setText(Boolean.toString(disallowFun));
+
+            // comment
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                // constant should not be available
+                if (disallowFun) {
+                    // disallowed
+                    comment.setText(getString(R.string.f_m, getString(R.string.f_true)));
+                } else {
+                    // allowed
+                    comment.setText(getString(R.string.f_m, getString(R.string.f_false)));
+                }
+            } else {
+                // available
+                if (disallowFun) {
+                    // disallowed
+                    comment.setText(R.string.f_true);
+                } else {
+                    // allowed
+                    comment.setText(R.string.f_false);
+                }
+            }
+
+
+        } catch (Throwable e) {
+            // unavailable
+
+            // result
+            result.setText(R.string.unavailable);
+
+            // comment
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                // pre Marshmallow, expected crash, function unavailable
+                comment.setText(R.string.f_unavailable);
+            } else {
+                // unexpected crash
+                comment.setText(R.string.f_crash);
+            }
+            comment.append("\n\n");
+            comment.append(e.toString());
+        }
+
+        // update
+        ClickableLinks.linkify(result, this);
+        ClickableLinks.linkify(comment, this);
     }
 
 }
