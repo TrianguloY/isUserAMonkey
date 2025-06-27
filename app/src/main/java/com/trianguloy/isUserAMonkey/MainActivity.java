@@ -7,6 +7,7 @@ import static java.util.Map.entry;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -99,10 +100,26 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         var txt_summary = this.<TextView>findViewById(R.id.summary);
         var txt_function = this.<TextView>findViewById(R.id.function);
         var txt_expand = this.<TextView>findViewById(R.id.expand);
+        txt_expand.setOnClickListener(v -> {
+            v.setVisibility(View.GONE);
+            txt_explanation.setVisibility(View.VISIBLE);
+        });
+        findViewById(R.id.run).setOnClickListener(v -> runAction.run(this));
+
+        // prepare about dialog
+        findViewById(R.id.about).setOnClickListener(v -> {
+            var about = getLayoutInflater().inflate(R.layout.about, null);
+            ClickableLinks.linkify(about.findViewById(R.id.about), this);
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.app_name)
+                    .setView(about)
+                    .setNegativeButton(android.R.string.ok, null)
+                    .show();
+        });
 
         // configure eggs
         for (var egg : eggs) {
-            var btn = (Button) getLayoutInflater().inflate(R.layout.button, null);
+            var btn = new Button(this);
             btn.setText(egg.btnText);
             btn.setOnClickListener(v -> {
                 // set egg specifics
@@ -134,23 +151,9 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
         // init rest
         Animations.enable(findViewById(R.id.parent));
-        ClickableLinks.linkify(findViewById(R.id.about), this);
     }
 
     // ------------------- listeners -------------------
-
-    /**
-     * A button was clicked
-     */
-    public void onButtonClick(View view) {
-        switch (view.getId()) {
-            case R.id.expand -> {
-                view.setVisibility(View.GONE);
-                txt_explanation.setVisibility(View.VISIBLE);
-            }
-            case R.id.run -> runAction.run(this);
-        }
-    }
 
     /**
      * A link (in a textview) was clicked
