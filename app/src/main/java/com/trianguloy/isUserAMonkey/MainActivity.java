@@ -1,6 +1,9 @@
 package com.trianguloy.isUserAMonkey;
 
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static java.util.Map.entry;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -13,14 +16,16 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.trianguloy.isUserAMonkey.tools.Animations;
 import com.trianguloy.isUserAMonkey.tools.ClickableLinks;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The main, and only, activity
@@ -32,25 +37,47 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     /**
      * tags to urls map
      */
-    private static final HashMap<String, String> links = new HashMap<>();
+    private static final Map<String, String> links = Map.ofEntries(
+            entry("TrianguloY", "https://github.com/TrianguloY"),
+            entry("GitHub", "https://github.com/TrianguloY/isUserAMonkey"),
+            entry("isUserAMonkey", "https://developer.android.com/reference/android/app/ActivityManager.html#isUserAMonkey()"),
+            entry("monkey", "https://developer.android.com/studio/test/monkey.html"),
+            entry("isUserAGoat", "https://developer.android.com/reference/android/os/UserManager.html#isUserAGoat()"),
+            entry("Goat Simulator", "https://play.google.com/store/apps/details?id=com.coffeestainstudios.goatsimulator"),
+            entry("DISALLOW_FUN", "https://developer.android.com/reference/android/os/UserManager.html#DISALLOW_FUN"),
+            entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
+            entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
+            entry("Android-Documentation-Easter-Eggs", "https://github.com/vitorOta/Android-Documentation-Easter-Eggs"),
+            entry("Noto Emoji", "https://github.com/googlefonts/noto-emoji/blob/f2a4f72/svg/emoji_u1f412.svg")
+    );
 
-    static {
-        links.put("TrianguloY", "https://github.com/TrianguloY");
-        links.put("GitHub", "https://github.com/TrianguloY/isUserAMonkey");
+    /**
+     * List of eggs
+     */
+    private static final List<Egg> eggs = List.of(
+            new Egg("🐒", R.string.m_summary, R.string.m_explanation, R.string.m_function, MainActivity::runMonkey),
+            new Egg("🐐", R.string.g_summary, R.string.g_explanation, R.string.g_function, MainActivity::runGoat),
+            new Egg("🎉", R.string.f_summary, R.string.f_explanation, R.string.f_function, MainActivity::runDisallowFun)
+    );
 
-        links.put("isUserAMonkey", "https://developer.android.com/reference/android/app/ActivityManager.html#isUserAMonkey()");
-        links.put("monkey", "https://developer.android.com/studio/test/monkey.html");
-
-        links.put("isUserAGoat", "https://developer.android.com/reference/android/os/UserManager.html#isUserAGoat()");
-        links.put("Goat Simulator", "https://play.google.com/store/apps/details?id=com.coffeestainstudios.goatsimulator");
-
-        links.put("DISALLOW_FUN", "https://developer.android.com/reference/android/os/UserManager.html#DISALLOW_FUN");
-
-        links.put("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165");
-        links.put("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461");
-        links.put("Android-Documentation-Easter-Eggs", "https://github.com/vitorOta/Android-Documentation-Easter-Eggs");
-        links.put("Noto Emoji", "https://github.com/googlefonts/noto-emoji/blob/f2a4f72/svg/emoji_u1f412.svg");
+    record Egg(
+            String btnText,
+            int summaryRes,
+            int explanationRes,
+            int functionRes,
+            Run runAction
+    ) {
+        interface Run {
+            void run(MainActivity mainActivity);
+        }
     }
+
+    // ------------------- common -------------------
+
+    private TextView txt_explanation;
+    private TextView txt_result;
+    private TextView txt_comment;
+    private Egg.Run runAction;
 
     // ------------------- initialization -------------------
 
@@ -61,13 +88,52 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewGroup parent = findViewById(R.id.parent);
+
+        // get common views
+        txt_explanation = this.findViewById(R.id.explanation);
+        txt_result = this.findViewById(R.id.result);
+        txt_comment = this.findViewById(R.id.comment);
+
+        // get specific views
+        var ll_buttons = this.<LinearLayout>findViewById(R.id.buttons);
+        var txt_summary = this.<TextView>findViewById(R.id.summary);
+        var txt_function = this.<TextView>findViewById(R.id.function);
+        var txt_expand = this.<TextView>findViewById(R.id.expand);
+
+        // configure eggs
+        for (var egg : eggs) {
+            var btn = (Button) getLayoutInflater().inflate(R.layout.button, null);
+            btn.setText(egg.btnText);
+            btn.setOnClickListener(v -> {
+                // set egg specifics
+                txt_summary.setText(egg.summaryRes());
+                ClickableLinks.linkify(txt_summary, this);
+                txt_explanation.setText(egg.explanationRes());
+                ClickableLinks.linkify(txt_explanation, this);
+                txt_function.setText(egg.functionRes());
+                ClickableLinks.linkify(txt_function, this);
+                txt_result.setText("");
+                txt_comment.setText(R.string.press);
+                runAction = egg.runAction;
+
+                // set bigger button
+                for (var i = 0; i < ll_buttons.getChildCount(); i++) {
+                    ((Button) ll_buttons.getChildAt(i)).setTextSize(COMPLEX_UNIT_DIP, 15);
+                }
+                btn.setTextSize(COMPLEX_UNIT_DIP, 30);
+
+                // reset state
+                txt_explanation.setVisibility(View.GONE);
+                txt_expand.setVisibility(View.VISIBLE);
+            });
+            ll_buttons.addView(btn);
+        }
+
+        // start with the first easter egg already loaded
+        ll_buttons.getChildAt(0).performClick();
 
         // init animations
-        Animations.enable(parent);
-
-        // init links
-        ClickableLinks.linkifyAll(parent, this);
+        Animations.enable(findViewById(R.id.parent));
     }
 
     // ------------------- listeners -------------------
@@ -77,19 +143,11 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
      */
     public void onButtonClick(View view) {
         switch (view.getId()) {
-            // run the isUserAMonkey function
-            case R.id.m_run -> runMonkey();
-            // run the isUserAGoat function
-            case R.id.g_run -> runGoat();
-            // run the DISALLOW_FUN function
-            case R.id.f_run -> runDisallowFun();
-
-            // show details for the isUserAMonkey function
-            case R.id.m_expand -> swap(view, R.id.m_details);
-            // show details for the isUserAGoat function
-            case R.id.g_expand -> swap(view, R.id.g_details);
-            // show details for the DISALLOW FUN function
-            case R.id.f_expand -> swap(view, R.id.f_details);
+            case R.id.expand -> {
+                view.setVisibility(View.GONE);
+                txt_explanation.setVisibility(View.VISIBLE);
+            }
+            case R.id.run -> runAction.run(this);
         }
     }
 
@@ -100,10 +158,10 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     public void onLinkClick(String tag) {
         if (!links.containsKey(tag)) {
             // link not present, error
-            String msg = "The entry '" + tag + "' wasn't present in the links hashmap";
+            var msg = "The entry '" + tag + "' wasn't present in the links hashmap";
             Log.d("NotFoundException", msg);
-            if (BuildConfig.DEBUG) // crash in development
-                throw new Resources.NotFoundException(msg);
+            // crash in development
+            if (BuildConfig.DEBUG) throw new Resources.NotFoundException(msg);
             return; // ignore in production
         }
 
@@ -118,97 +176,70 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
     // ------------------- functions -------------------
 
-    /**
-     * Just a (hopefully) inlined function to hide one view and show another
-     *
-     * @param hide view to hide
-     * @param show identifier of view to show
-     */
-    private void swap(View hide, int show) {
-        hide.setVisibility(View.GONE);
-        findViewById(show).setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Run the isUserAMonkey function, and update the ui accordingly
-     */
     private void runMonkey() {
-
-        // views
-        TextView result = this.findViewById(R.id.m_result);
-        TextView comment = this.findViewById(R.id.m_comment);
-
         try {
 
             // run
-            boolean isUserAMonkey = ActivityManager.isUserAMonkey(); // <-- This!
+            var isUserAMonkey = ActivityManager.isUserAMonkey(); // <-- This!
 
             // result
-            result.setText(Boolean.toString(isUserAMonkey));
+            txt_result.setText(Boolean.toString(isUserAMonkey));
 
             // comment
             if (isUserAMonkey) {
-                comment.setText(R.string.m_true);
+                txt_comment.setText(R.string.m_true);
             } else {
-                comment.setText(R.string.m_false);
+                txt_comment.setText(R.string.m_false);
             }
 
         } catch (Throwable e) {
 
             // unavailable (unexpected)
-            result.setText(R.string.unavailable);
-            comment.setText(R.string.m_crash);
-            comment.append("\n\n");
-            comment.append(e.toString());
+            txt_result.setText(R.string.unavailable);
+            txt_comment.setText(R.string.m_crash);
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
         }
 
         // update
-        ClickableLinks.linkify(result, this);
-        ClickableLinks.linkify(comment, this);
+        ClickableLinks.linkify(txt_result, this);
+        ClickableLinks.linkify(txt_comment, this);
     }
 
-    /**
-     * Run the isUserAGoat function, and update the ui accordingly
-     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) // to suppress the wanted unavailable error
     private void runGoat() {
-
-        // views
-        TextView result = this.findViewById(R.id.g_result);
-        TextView comment = this.findViewById(R.id.g_comment);
-
         try {
 
             // run
             boolean isUserAGoat = ((UserManager) getSystemService(Context.USER_SERVICE)).isUserAGoat(); // <-- This!
 
             // result
-            result.setText(Boolean.toString(isUserAGoat));
+            txt_result.setText(Boolean.toString(isUserAGoat));
 
             // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 // should have crashed
-                comment.setText(R.string.g_jb);
+                txt_comment.setText(R.string.g_jb);
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 // pre lollipop, always return false
                 if (isUserAGoat) {
-                    comment.setText(R.string.g_lollipop_true);
+                    txt_comment.setText(R.string.g_lollipop_true);
                 } else {
-                    comment.setText(R.string.g_lollipop_false);
+                    txt_comment.setText(R.string.g_lollipop_false);
                 }
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 // post lollipop and pre R, checks for goat simulator
                 if (isUserAGoat) {
-                    comment.setText(R.string.g_true);
+                    txt_comment.setText(R.string.g_true);
                 } else {
-                    comment.setText(R.string.g_false);
+                    txt_comment.setText(R.string.g_false);
                 }
             } else {
                 // post R, always return false
                 if (isUserAGoat) {
-                    comment.setText(R.string.g_r_true);
+                    txt_comment.setText(R.string.g_r_true);
                 } else {
-                    comment.setText(R.string.g_r_false);
+                    txt_comment.setText(R.string.g_r_false);
                 }
             }
 
@@ -216,59 +247,53 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             // unavailable
 
             // result
-            result.setText(R.string.unavailable);
+            txt_result.setText(R.string.unavailable);
 
             // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 // pre jelly bean, expected crash, function unavailable
-                comment.setText(R.string.g_unavailable);
+                txt_comment.setText(R.string.g_unavailable);
             } else {
                 // unexpected crash
-                comment.setText(R.string.g_crash);
+                txt_comment.setText(R.string.g_crash);
             }
-            comment.append("\n\n");
-            comment.append(e.toString());
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
         }
 
         // update
-        ClickableLinks.linkify(result, this);
-        ClickableLinks.linkify(comment, this);
-
+        ClickableLinks.linkify(txt_result, this);
+        ClickableLinks.linkify(txt_comment, this);
     }
 
     @TargetApi(Build.VERSION_CODES.M) // to suppress the wanted unavailable error
     private void runDisallowFun() {
-
-        // views
-        TextView result = this.findViewById(R.id.f_result);
-        TextView comment = this.findViewById(R.id.f_comment);
-
         try {
 
             // run
             var disallowFun = ((UserManager) getSystemService(Context.USER_SERVICE)).hasUserRestriction(UserManager.DISALLOW_FUN); // <-- This!
 
             // result
-            result.setText(Boolean.toString(disallowFun));
+            txt_result.setText(Boolean.toString(disallowFun));
 
             // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 // constant should not be available
                 if (disallowFun) {
                     // disallowed
-                    comment.setText(getString(R.string.f_m, getString(R.string.f_true)));
+                    txt_comment.setText(getString(R.string.f_m, getString(R.string.f_true)));
                 } else {
                     // allowed
-                    comment.setText(getString(R.string.f_m, getString(R.string.f_false)));
+                    txt_comment.setText(getString(R.string.f_m, getString(R.string.f_false)));
                 }
             } else {
                 // available
                 if (disallowFun) {
                     // disallowed
-                    comment.setText(R.string.f_true);
+                    txt_comment.setText(R.string.f_true);
                 } else {
                     // allowed
-                    comment.setText(R.string.f_false);
+                    txt_comment.setText(R.string.f_false);
                 }
             }
 
@@ -277,23 +302,23 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             // unavailable
 
             // result
-            result.setText(R.string.unavailable);
+            txt_result.setText(R.string.unavailable);
 
             // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 // pre Marshmallow, expected crash, function unavailable
-                comment.setText(R.string.f_unavailable);
+                txt_comment.setText(R.string.f_unavailable);
             } else {
                 // unexpected crash
-                comment.setText(R.string.f_crash);
+                txt_comment.setText(R.string.f_crash);
             }
-            comment.append("\n\n");
-            comment.append(e.toString());
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
         }
 
         // update
-        ClickableLinks.linkify(result, this);
-        ClickableLinks.linkify(comment, this);
+        ClickableLinks.linkify(txt_result, this);
+        ClickableLinks.linkify(txt_comment, this);
     }
 
 }

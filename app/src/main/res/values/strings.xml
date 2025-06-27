@@ -27,9 +27,9 @@
     <string name="g_unavailable">The function is unavailable on Android below 4.2, so unfortunately it crashes when you try to run it.</string>
     <string name="g_crash">This was unexpected, you are using a device with Android above 4.1 where this function should exist, yet it crashed for you. Perhaps it was removed from a future android version?</string>
 
-    <string name="f_function">userManager.hasUserRestriction(UserManager.[DISALLOW_FUN])</string>
+    <string name="f_function">userManager.hasUserRestriction(UserManager.[[DISALLOW_FUN]])</string>
     <string name="f_summary">This constant is present in the Android SDK, is your device restricting the \'fun\'? Hopefully not!</string>
-    <string name="f_explanation">This constant checks for the device policy that \'disallows fun\', which inside android itself disabled the Android version easter egg (when you press several times on the android version inside the android settings). It is not sure if there are other third-party apps that react to this policy, maybe this app is the first one?</string>
+    <string name="f_explanation">This constant checks for the device policy that \'disallows fun\', which basically disables the Android version easter egg (when you press several times on the android version inside the android settings). It is not sure if there are other third-party apps that react to this policy, maybe this app is the first one?</string>
     <string name="f_unavailable">The function is unavailable on Android below 6, so unfortunately it crashes when you try to run it.</string>
     <string name="f_crash">This was unexpected! The function should be available on Android above 5, yet it crashed for you, perhaps it was removed on a future android version?</string>
     <string name="f_true">Oh no, you are not allowed to have fun, please read this with a monotone inner voice and don\'t smile.</string>

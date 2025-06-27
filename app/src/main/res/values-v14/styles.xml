@@ -2,5 +2,6 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.DeviceDefault">
         <item name="android:imageButtonStyle">?android:attr/buttonBarButtonStyle</item>
+        <item name="android:buttonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
 </resources>

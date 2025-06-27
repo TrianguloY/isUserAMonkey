@@ -63,21 +63,6 @@ public class ClickableLinks {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    /**
-     * Runs the {@link #linkify(TextView, OnUrlListener)} on all textviews of the hierarchy recursively
-     *
-     * @param container parent where to search
-     * @param listener  listener to apply to all textviews
-     */
-    public static void linkifyAll(ViewGroup container, OnUrlListener listener) {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            View view = container.getChildAt(i);
-
-            if (view instanceof TextView) linkify((TextView) view, listener);
-            else if (view instanceof ViewGroup) linkifyAll((ViewGroup) view, listener);
-        }
-    }
-
     // ------------------- private -------------------
 
     /**
