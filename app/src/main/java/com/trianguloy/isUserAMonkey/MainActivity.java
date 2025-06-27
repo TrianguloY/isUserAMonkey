@@ -132,8 +132,9 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         // start with the first easter egg already loaded
         ll_buttons.getChildAt(0).performClick();
 
-        // init animations
+        // init rest
         Animations.enable(findViewById(R.id.parent));
+        ClickableLinks.linkify(findViewById(R.id.about), this);
     }
 
     // ------------------- listeners -------------------
