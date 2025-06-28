@@ -18,6 +18,7 @@ import android.os.UserManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,14 +42,24 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     private static final Map<String, String> links = Map.ofEntries(
             entry("TrianguloY", "https://github.com/TrianguloY"),
             entry("GitHub", "https://github.com/TrianguloY/isUserAMonkey"),
+
             entry("isUserAMonkey", "https://developer.android.com/reference/android/app/ActivityManager.html#isUserAMonkey()"),
             entry("monkey", "https://developer.android.com/studio/test/monkey.html"),
+
             entry("isUserAGoat", "https://developer.android.com/reference/android/os/UserManager.html#isUserAGoat()"),
             entry("Goat Simulator", "https://play.google.com/store/apps/details?id=com.coffeestainstudios.goatsimulator"),
+
             entry("DISALLOW_FUN", "https://developer.android.com/reference/android/os/UserManager.html#DISALLOW_FUN"),
+
+            entry("isTheFinalCountdown", "https://developer.android.com/reference/android/widget/Chronometer#isTheFinalCountDown()"),
+            entry("The final countdown", "https://youtu.be/9jK-NcRmVcw"),
+            entry("FLAG_ACTIVITY_LAUNCH_ADJACENT", "https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT"),
+
             entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
             entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
+            entry("jokes-and-humour-in-the-public-android-api", "https://voxelmanip.se/2025/06/14/jokes-and-humour-in-the-public-android-api/"),
             entry("Android-Documentation-Easter-Eggs", "https://github.com/vitorOta/Android-Documentation-Easter-Eggs"),
+
             entry("Noto Emoji", "https://github.com/googlefonts/noto-emoji/blob/f2a4f72/svg/emoji_u1f412.svg")
     );
 
@@ -58,7 +69,8 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     private static final List<Egg> eggs = List.of(
             new Egg("🐒", R.string.m_summary, R.string.m_explanation, R.string.m_function, MainActivity::runMonkey),
             new Egg("🐐", R.string.g_summary, R.string.g_explanation, R.string.g_function, MainActivity::runGoat),
-            new Egg("🎉", R.string.f_summary, R.string.f_explanation, R.string.f_function, MainActivity::runDisallowFun)
+            new Egg("🎉", R.string.f_summary, R.string.f_explanation, R.string.f_function, MainActivity::runDisallowFun),
+            new Egg("⏱", R.string.c_summary, R.string.c_explanation, R.string.c_function, MainActivity::runChronoFinalCountdown)
     );
 
     record Egg(
@@ -74,8 +86,6 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     }
 
     // ------------------- common -------------------
-
-    private TextView txt_explanation;
     private TextView txt_result;
     private TextView txt_comment;
     private Egg.Run runAction;
@@ -91,11 +101,11 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         setContentView(R.layout.activity_main);
 
         // get common views
-        txt_explanation = this.findViewById(R.id.explanation);
         txt_result = this.findViewById(R.id.result);
         txt_comment = this.findViewById(R.id.comment);
 
         // get specific views
+        var txt_explanation = this.<TextView>findViewById(R.id.explanation);
         var ll_buttons = this.<LinearLayout>findViewById(R.id.buttons);
         var txt_summary = this.<TextView>findViewById(R.id.summary);
         var txt_function = this.<TextView>findViewById(R.id.function);
@@ -183,18 +193,9 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     private void runMonkey() {
         try {
 
-            // run
             var isUserAMonkey = ActivityManager.isUserAMonkey(); // <-- This!
-
-            // result
             txt_result.setText(Boolean.toString(isUserAMonkey));
-
-            // comment
-            if (isUserAMonkey) {
-                txt_comment.setText(R.string.m_true);
-            } else {
-                txt_comment.setText(R.string.m_false);
-            }
+            txt_comment.setText(isUserAMonkey ? R.string.m_true : R.string.m_false);
 
         } catch (Throwable e) {
 
@@ -214,46 +215,27 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     private void runGoat() {
         try {
 
-            // run
-            boolean isUserAGoat = ((UserManager) getSystemService(Context.USER_SERVICE)).isUserAGoat(); // <-- This!
-
-            // result
+            var isUserAGoat = ((UserManager) getSystemService(Context.USER_SERVICE)).isUserAGoat(); // <-- This!
             txt_result.setText(Boolean.toString(isUserAGoat));
 
-            // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 // should have crashed
                 txt_comment.setText(R.string.g_jb);
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 // pre lollipop, always return false
-                if (isUserAGoat) {
-                    txt_comment.setText(R.string.g_lollipop_true);
-                } else {
-                    txt_comment.setText(R.string.g_lollipop_false);
-                }
+                txt_comment.setText(isUserAGoat ? R.string.g_lollipop_true : R.string.g_lollipop_false);
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 // post lollipop and pre R, checks for goat simulator
-                if (isUserAGoat) {
-                    txt_comment.setText(R.string.g_true);
-                } else {
-                    txt_comment.setText(R.string.g_false);
-                }
+                txt_comment.setText(isUserAGoat ? R.string.g_true : R.string.g_false);
             } else {
                 // post R, always return false
-                if (isUserAGoat) {
-                    txt_comment.setText(R.string.g_r_true);
-                } else {
-                    txt_comment.setText(R.string.g_r_false);
-                }
+                txt_comment.setText(isUserAGoat ? R.string.g_r_true : R.string.g_r_false);
             }
 
         } catch (Throwable e) {
             // unavailable
-
-            // result
             txt_result.setText(R.string.unavailable);
 
-            // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 // pre jelly bean, expected crash, function unavailable
                 txt_comment.setText(R.string.g_unavailable);
@@ -274,41 +256,22 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     private void runDisallowFun() {
         try {
 
-            // run
             var disallowFun = ((UserManager) getSystemService(Context.USER_SERVICE)).hasUserRestriction(UserManager.DISALLOW_FUN); // <-- This!
-
-            // result
             txt_result.setText(Boolean.toString(disallowFun));
 
-            // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 // constant should not be available
-                if (disallowFun) {
-                    // disallowed
-                    txt_comment.setText(getString(R.string.f_m, getString(R.string.f_true)));
-                } else {
-                    // allowed
-                    txt_comment.setText(getString(R.string.f_m, getString(R.string.f_false)));
-                }
+                txt_comment.setText(disallowFun ? getString(R.string.f_m, getString(R.string.f_true)) : getString(R.string.f_m, getString(R.string.f_false)));
             } else {
                 // available
-                if (disallowFun) {
-                    // disallowed
-                    txt_comment.setText(R.string.f_true);
-                } else {
-                    // allowed
-                    txt_comment.setText(R.string.f_false);
-                }
+                txt_comment.setText(disallowFun ? R.string.f_true : R.string.f_false);
             }
 
 
         } catch (Throwable e) {
             // unavailable
-
-            // result
             txt_result.setText(R.string.unavailable);
 
-            // comment
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 // pre Marshmallow, expected crash, function unavailable
                 txt_comment.setText(R.string.f_unavailable);
@@ -323,6 +286,35 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         // update
         ClickableLinks.linkify(txt_result, this);
         ClickableLinks.linkify(txt_comment, this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    void runChronoFinalCountdown() {
+        try {
+            var result = new Chronometer(this).isTheFinalCountDown(); // <-- This!
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                // constant should not be available
+                txt_comment.setText(result ? getString(R.string.c_available, getString(R.string.f_true)) : getString(R.string.c_available, getString(R.string.f_false)));
+            } else {
+                // available
+                txt_comment.setText(result ? R.string.c_true : R.string.c_false);
+            }
+
+            txt_result.setText(Boolean.toString(result));
+        } catch (Exception e) {
+            txt_result.setText(R.string.unavailable);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                // pre Oreo, expected crash, function unavailable
+                txt_comment.setText(R.string.c_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.c_crash);
+            }
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
     }
 
 }

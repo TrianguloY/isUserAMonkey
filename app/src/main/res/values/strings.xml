@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">isUserAMonkey &amp; isUserAGoat</string>
-    <string name="about">App developed by [[TrianguloY]].\nThe source code of the app is available on [[GitHub]].\n\nSpecial thanks to StackOverflow \'[[proper-use-cases-for-android-usermanager-isuseragoat]]\' and \'[[strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is]]\' for the detailed information. Check also [[Android-Documentation-Easter-Eggs]] where you can find even more easter eggs!\n\nThe monkey emoji in the icon was extracted from the [[Noto Emoji]] font.</string>
+    <string name="about">App developed by [[TrianguloY]].\nThe source code of the app is available on [[GitHub]].\n\nSpecial thanks to StackOverflow \'[[proper-use-cases-for-android-usermanager-isuseragoat]]\', \'[[strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is]]\' and \'[[jokes-and-humour-in-the-public-android-api]]\' for the detailed information. Check also [[Android-Documentation-Easter-Eggs]] where you can find even more easter eggs!\n\nThe monkey emoji in the icon was extracted from the [[Noto Emoji]] font.</string>
 
     <string name="expand">Show detailed explanation…</string>
     <string name="press">Press the \'run\' button above to execute the function</string>
@@ -35,4 +35,13 @@
     <string name="f_true">Oh no, you are not allowed to have fun, please read this with a monotone inner voice and don\'t smile.</string>
     <string name="f_false">This was the expected outcome. You are allowed to have fun! Let\'s rejoice! This also means you can play/run the android settings easter egg, have you tried it yet?</string>
     <string name="f_m">This was unexpected! The function should be unavailable on Android below 6, yet in your case it didn\'t crash? Maybe your ROM implemented it? In that case: %s</string>
+
+    <string name="c_function">chronometer.[[isTheFinalCountdown]]()</string>
+    <string name="c_summary">When creating a chronometer, you can check if it\'s the final countdown…will it be?</string>
+    <string name="c_explanation">This method is hardcoded to open the Youtube video for the song \'[[The final countdown]]\' by Europe. It even opens it [[FLAG_ACTIVITY_LAUNCH_ADJACENT|adjacent to the current app]], which is not a very used/known feature by developers. It will return true if the video was correctly opened, false if there was en error doing so.</string>
+    <string name="c_true">The method run as expected, the video should have been opened, enjoy!</string>
+    <string name="c_false">The method run, but apparently it failed to open the video. Perhaps you don\'t have any app that can open it?</string>
+    <string name="c_unavailable">The method is only present on android 8.0 and above, which means that unfortunately on your device it crashes because it doesn\'t exist.</string>
+    <string name="c_crash">Even though you are on a device above 8.0, the method crashed on your device, which is odd.</string>
+    <string name="c_available">This method should be available only on Android 8.0 and above, yet it didn\'t crash for you? Did your ROM implemented it? In that case: %s</string>
 </resources>
