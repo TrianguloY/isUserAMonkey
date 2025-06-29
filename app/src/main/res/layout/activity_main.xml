@@ -68,30 +68,6 @@
                 android:background="@android:color/darker_gray" />
 
             <TextView
-                android:id="@+id/expand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="@string/expand"
-                tools:visibility="gone" />
-
-            <TextView
-                android:id="@+id/explanation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@string/m_explanation"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
                 android:id="@+id/function"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,6 +105,31 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/press" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/expand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="@string/expand"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/explanation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@string/m_explanation"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
         </LinearLayout>
     </ScrollView>
 

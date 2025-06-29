@@ -44,4 +44,12 @@
     <string name="c_unavailable">The method is only present on android 8.0 and above, which means that unfortunately on your device it crashes because it doesn\'t exist.</string>
     <string name="c_crash">Even though you are on a device above 8.0, the method crashed on your device, which is odd.</string>
     <string name="c_available">This method should be available only on Android 8.0 and above, yet it didn\'t crash for you? Did your ROM implemented it? In that case: %s</string>
+    <string name="j_true">Ya like Jazz? Because your device supports it :P\nAnyway, this was the expected outcome, as nowadays most/all devices support detecting more than 5 fingers on the screen.</string>
+    <string name="j_false">(jazz music stops)\nOh no, you can\'t play jazz on this device!\nThis basically means that your device is not able to detect more than 5 fingers simultaneously.</string>
+    <string name="j_crash">That was unexpected, this constant is available since Android 2.3, but for some reason it crashed on your device. Either you somehow managed to install this app on an unsupported android version, or this constant was removed on a future one.</string>
+    <string name="j_g">Unexpected! The constant should not be available on your device under Android 2.3, yet it run without issue, perhaps your ROM implemented it? In that case:\n%s</string>
+    <string name="j_unavailable">The constant was added on Android 2.3, and your device is so old it still don\'t have it, so it crashes.</string>
+    <string name="j_function">packageManager.hasSystemFeature(PackageManager.[[FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND]]);</string>
+    <string name="j_summary">Do you have Jazz Hands? Will your device support it?</string>
+    <string name="j_explanation">This constant\'s name may have been added as a joke, but at least here the description explains it properly:\n\n\"The device\'s touch screen is capable of tracking a full hand of fingers fully independently — that is, 5 or more simultaneous independent pointers.\"\n\nBasically: it\'s a way for applications to know if the device is able to detect at least 5 independent fingers moving on the screen, which is a capability that nowadays should have almost all (if not all) devices.</string>
 </resources>

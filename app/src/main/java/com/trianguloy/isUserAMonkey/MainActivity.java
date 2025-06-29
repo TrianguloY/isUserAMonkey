@@ -10,6 +10,7 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +57,8 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             entry("The final countdown", "https://youtu.be/9jK-NcRmVcw"),
             entry("FLAG_ACTIVITY_LAUNCH_ADJACENT", "https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_LAUNCH_ADJACENT"),
 
+            entry("FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND", "https://developer.android.com/reference/android/content/pm/PackageManager.html#FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND"),
+
             entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
             entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
             entry("jokes-and-humour-in-the-public-android-api", "https://voxelmanip.se/2025/06/14/jokes-and-humour-in-the-public-android-api/"),
@@ -70,7 +74,8 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             new Egg("🐒", R.string.m_summary, R.string.m_explanation, R.string.m_function, MainActivity::runMonkey),
             new Egg("🐐", R.string.g_summary, R.string.g_explanation, R.string.g_function, MainActivity::runGoat),
             new Egg("🎉", R.string.f_summary, R.string.f_explanation, R.string.f_function, MainActivity::runDisallowFun),
-            new Egg("⏱", R.string.c_summary, R.string.c_explanation, R.string.c_function, MainActivity::runChronoFinalCountdown)
+            new Egg("⏱", R.string.c_summary, R.string.c_explanation, R.string.c_function, MainActivity::runChronoFinalCountdown),
+            new Egg("🎺", R.string.j_summary, R.string.j_explanation, R.string.j_function, MainActivity::runJazzHands)
     );
 
     record Egg(
@@ -114,7 +119,13 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             v.setVisibility(View.GONE);
             txt_explanation.setVisibility(View.VISIBLE);
         });
-        findViewById(R.id.run).setOnClickListener(v -> runAction.run(this));
+        findViewById(R.id.run).setOnClickListener(v -> {
+            // run
+            runAction.run(this);
+            // update
+            ClickableLinks.linkify(txt_result, this);
+            ClickableLinks.linkify(txt_comment, this);
+        });
 
         // prepare about dialog
         findViewById(R.id.about).setOnClickListener(v -> {
@@ -159,6 +170,13 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         // start with the first easter egg already loaded
         ll_buttons.getChildAt(0).performClick();
 
+        // and an animation to indicate there are more elements
+        var scr_parent = (HorizontalScrollView) ll_buttons.getParent();
+        scr_parent.post(() -> {
+            scr_parent.scrollTo(scr_parent.getWidth(), 0);
+            scr_parent.postDelayed(() -> scr_parent.smoothScrollTo(0, 0), 500);
+        });
+
         // init rest
         Animations.enable(findViewById(R.id.parent));
     }
@@ -192,44 +210,37 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
     private void runMonkey() {
         try {
-
-            var isUserAMonkey = ActivityManager.isUserAMonkey(); // <-- This!
+            var isUserAMonkey = ActivityManager.isUserAMonkey(); // <-- this!
             txt_result.setText(Boolean.toString(isUserAMonkey));
             txt_comment.setText(isUserAMonkey ? R.string.m_true : R.string.m_false);
 
         } catch (Throwable e) {
-
             // unavailable (unexpected)
             txt_result.setText(R.string.unavailable);
             txt_comment.setText(R.string.m_crash);
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
-
-        // update
-        ClickableLinks.linkify(txt_result, this);
-        ClickableLinks.linkify(txt_comment, this);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) // to suppress the wanted unavailable error
     private void runGoat() {
         try {
-
-            var isUserAGoat = ((UserManager) getSystemService(Context.USER_SERVICE)).isUserAGoat(); // <-- This!
-            txt_result.setText(Boolean.toString(isUserAGoat));
+            var result = ((UserManager) getSystemService(Context.USER_SERVICE)).isUserAGoat(); // <-- this!
+            txt_result.setText(Boolean.toString(result));
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 // should have crashed
                 txt_comment.setText(R.string.g_jb);
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 // pre lollipop, always return false
-                txt_comment.setText(isUserAGoat ? R.string.g_lollipop_true : R.string.g_lollipop_false);
+                txt_comment.setText(result ? R.string.g_lollipop_true : R.string.g_lollipop_false);
             } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 // post lollipop and pre R, checks for goat simulator
-                txt_comment.setText(isUserAGoat ? R.string.g_true : R.string.g_false);
+                txt_comment.setText(result ? R.string.g_true : R.string.g_false);
             } else {
                 // post R, always return false
-                txt_comment.setText(isUserAGoat ? R.string.g_r_true : R.string.g_r_false);
+                txt_comment.setText(result ? R.string.g_r_true : R.string.g_r_false);
             }
 
         } catch (Throwable e) {
@@ -246,25 +257,20 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
-
-        // update
-        ClickableLinks.linkify(txt_result, this);
-        ClickableLinks.linkify(txt_comment, this);
     }
 
     @TargetApi(Build.VERSION_CODES.M) // to suppress the wanted unavailable error
     private void runDisallowFun() {
         try {
-
-            var disallowFun = ((UserManager) getSystemService(Context.USER_SERVICE)).hasUserRestriction(UserManager.DISALLOW_FUN); // <-- This!
-            txt_result.setText(Boolean.toString(disallowFun));
+            var result = ((UserManager) getSystemService(Context.USER_SERVICE)).hasUserRestriction(UserManager.DISALLOW_FUN); // <-- this!
+            txt_result.setText(Boolean.toString(result));
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 // constant should not be available
-                txt_comment.setText(disallowFun ? getString(R.string.f_m, getString(R.string.f_true)) : getString(R.string.f_m, getString(R.string.f_false)));
+                txt_comment.setText(getString(R.string.f_m, getString(result ? R.string.f_true : R.string.f_false)));
             } else {
                 // available
-                txt_comment.setText(disallowFun ? R.string.f_true : R.string.f_false);
+                txt_comment.setText(result ? R.string.f_true : R.string.f_false);
             }
 
 
@@ -282,20 +288,16 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
-
-        // update
-        ClickableLinks.linkify(txt_result, this);
-        ClickableLinks.linkify(txt_comment, this);
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     void runChronoFinalCountdown() {
         try {
-            var result = new Chronometer(this).isTheFinalCountDown(); // <-- This!
+            var result = new Chronometer(this).isTheFinalCountDown(); // <-- this!
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 // constant should not be available
-                txt_comment.setText(result ? getString(R.string.c_available, getString(R.string.f_true)) : getString(R.string.c_available, getString(R.string.f_false)));
+                txt_comment.setText(getString(R.string.c_available, getString(result ? R.string.f_true : R.string.f_false)));
             } else {
                 // available
                 txt_comment.setText(result ? R.string.c_true : R.string.c_false);
@@ -312,6 +314,38 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
                 // unexpected crash
                 txt_comment.setText(R.string.c_crash);
             }
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    void runJazzHands() {
+        try {
+
+            var result = getPackageManager().hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND); // <-- this!
+            txt_result.setText(Boolean.toString(result));
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+                // constant should not be available
+                txt_comment.setText(getString(R.string.j_g, getString(result ? R.string.j_true : R.string.j_false)));
+            } else {
+                // available
+                txt_comment.setText(result ? R.string.j_true : R.string.j_false);
+            }
+
+        } catch (Throwable e) {
+            // unavailable
+            txt_result.setText(R.string.unavailable);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+                // pre gingerbread, expected crash, function unavailable
+                txt_comment.setText(R.string.j_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.j_crash);
+            }
+
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
