@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.HorizontalScrollView;
@@ -59,6 +60,10 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
             entry("FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND", "https://developer.android.com/reference/android/content/pm/PackageManager.html#FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND"),
 
+            entry("wtf", "https://developer.android.com/reference/android/util/Log.html#wtf(java.lang.String,%20java.lang.String,%20java.lang.Throwable)"),
+
+            entry("fyiWillBeAdvancedByHostKThx", "https://developer.android.com/reference/android/widget/AdapterViewFlipper.html#fyiWillBeAdvancedByHostKThx()"),
+
             entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
             entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
             entry("jokes-and-humour-in-the-public-android-api", "https://voxelmanip.se/2025/06/14/jokes-and-humour-in-the-public-android-api/"),
@@ -75,7 +80,9 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             new Egg("🐐", R.string.g_summary, R.string.g_explanation, R.string.g_function, MainActivity::runGoat),
             new Egg("🎉", R.string.f_summary, R.string.f_explanation, R.string.f_function, MainActivity::runDisallowFun),
             new Egg("⏱", R.string.c_summary, R.string.c_explanation, R.string.c_function, MainActivity::runChronoFinalCountdown),
-            new Egg("🎺", R.string.j_summary, R.string.j_explanation, R.string.j_function, MainActivity::runJazzHands)
+            new Egg("🎺", R.string.j_summary, R.string.j_explanation, R.string.j_function, MainActivity::runJazzHands),
+            new Egg("⁉", R.string.wtf_summary, R.string.wtf_explanation, R.string.wtf_function, MainActivity::runWTF),
+            new Egg("ℹ", R.string.fyi_summary, R.string.fyi_explanation, R.string.fyi_function, MainActivity::runFYI)
     );
 
     record Egg(
@@ -215,8 +222,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             txt_comment.setText(isUserAMonkey ? R.string.m_true : R.string.m_false);
 
         } catch (Throwable e) {
-            // unavailable (unexpected)
-            txt_result.setText(R.string.unavailable);
+            txt_result.setText(R.string.crash);
             txt_comment.setText(R.string.m_crash);
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
@@ -244,11 +250,10 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             }
 
         } catch (Throwable e) {
-            // unavailable
-            txt_result.setText(R.string.unavailable);
+            txt_result.setText(R.string.crash);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                // pre jelly bean, expected crash, function unavailable
+                // expected crash, function unavailable
                 txt_comment.setText(R.string.g_unavailable);
             } else {
                 // unexpected crash
@@ -275,11 +280,10 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
 
         } catch (Throwable e) {
-            // unavailable
-            txt_result.setText(R.string.unavailable);
+            txt_result.setText(R.string.crash);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                // pre Marshmallow, expected crash, function unavailable
+                // expected crash, function unavailable
                 txt_comment.setText(R.string.f_unavailable);
             } else {
                 // unexpected crash
@@ -294,6 +298,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     void runChronoFinalCountdown() {
         try {
             var result = new Chronometer(this).isTheFinalCountDown(); // <-- this!
+            txt_result.setText(Boolean.toString(result));
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 // constant should not be available
@@ -303,12 +308,11 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
                 txt_comment.setText(result ? R.string.c_true : R.string.c_false);
             }
 
-            txt_result.setText(Boolean.toString(result));
-        } catch (Exception e) {
-            txt_result.setText(R.string.unavailable);
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                // pre Oreo, expected crash, function unavailable
+                // expected crash, function unavailable
                 txt_comment.setText(R.string.c_unavailable);
             } else {
                 // unexpected crash
@@ -335,15 +339,60 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             }
 
         } catch (Throwable e) {
-            // unavailable
-            txt_result.setText(R.string.unavailable);
+            txt_result.setText(R.string.crash);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
-                // pre gingerbread, expected crash, function unavailable
+                // expected crash, function unavailable
                 txt_comment.setText(R.string.j_unavailable);
             } else {
                 // unexpected crash
                 txt_comment.setText(R.string.j_crash);
+            }
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
+    }
+
+    void runWTF() {
+        try {
+            var result = Log.wtf("TAG", "msg"); // <-- this!
+
+            txt_result.setText(Integer.toString(result));
+            txt_comment.setText(result > 0 ? R.string.wtf_positive : R.string.wtf_nonpositive);
+
+        } catch (Throwable e) {
+            txt_comment.setText(R.string.wtf_crash);
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    void runFYI() {
+        try {
+
+            new AdapterViewFlipper(this).fyiWillBeAdvancedByHostKThx(); // <-- this!
+            txt_result.setText(R.string.no_value);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                // constant should not be available
+                txt_comment.setText(getString(R.string.fyi_unexpected, getString(R.string.fyi_run)));
+            } else {
+                // available
+                txt_comment.setText(R.string.fyi_run);
+            }
+
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                // expected crash, function unavailable
+                txt_comment.setText(R.string.fyi_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.fyi_crash);
             }
 
             txt_comment.append("\n\n");

@@ -4,8 +4,9 @@
 
     <string name="expand">Show detailed explanation…</string>
     <string name="press">Press the \'run\' button above to execute the function</string>
-    <string name="unavailable">unavailable</string>
+    <string name="crash">(code crashed)</string>
     <string name="no_browser">Can\'t open links, is a browser installed?</string>
+    <string name="no_value">(no return value)</string>
 
     <string name="m_function">ActivityManager.[[isUserAMonkey]]()</string>
     <string name="m_summary">The android SDK contains a strange function called \'[[isUserAMonkey]]\'.\nAre you a Monkey? Let\'s find out!</string>
@@ -44,6 +45,7 @@
     <string name="c_unavailable">The method is only present on android 8.0 and above, which means that unfortunately on your device it crashes because it doesn\'t exist.</string>
     <string name="c_crash">Even though you are on a device above 8.0, the method crashed on your device, which is odd.</string>
     <string name="c_available">This method should be available only on Android 8.0 and above, yet it didn\'t crash for you? Did your ROM implemented it? In that case: %s</string>
+
     <string name="j_true">Ya like Jazz? Because your device supports it :P\nAnyway, this was the expected outcome, as nowadays most/all devices support detecting more than 5 fingers on the screen.</string>
     <string name="j_false">(jazz music stops)\nOh no, you can\'t play jazz on this device!\nThis basically means that your device is not able to detect more than 5 fingers simultaneously.</string>
     <string name="j_crash">That was unexpected, this constant is available since Android 2.3, but for some reason it crashed on your device. Either you somehow managed to install this app on an unsupported android version, or this constant was removed on a future one.</string>
@@ -52,4 +54,20 @@
     <string name="j_function">packageManager.hasSystemFeature(PackageManager.[[FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND]]);</string>
     <string name="j_summary">Do you have Jazz Hands? Will your device support it?</string>
     <string name="j_explanation">This constant\'s name may have been added as a joke, but at least here the description explains it properly:\n\n\"The device\'s touch screen is capable of tracking a full hand of fingers fully independently — that is, 5 or more simultaneous independent pointers.\"\n\nBasically: it\'s a way for applications to know if the device is able to detect at least 5 independent fingers moving on the screen, which is a capability that nowadays should have almost all (if not all) devices.</string>
+
+    <string name="wtf_crash">Something bad happened and the method crashed...for some unknown reason.</string>
+    <string name="wtf_comment">The message was logged, the result shows</string>
+    <string name="wtf_positive">The method run and logged the message as expected. In order to check it you will need to use ADB (or root privileges).</string>
+    <string name="wtf_nonpositive">The method run, but did not logged the message for some reason (or maybe I didn\'t understood the explanation of the return value?)</string>
+    <string name="wtf_function">Log.[[wtf]](\"TAG\", \"msg\");</string>
+    <string name="wtf_summary">WTF means \'What a Terrible Failure\', that\'s obvious. Here on Android you can log data representing exactly that.\n\nImportant note: According to the documentation running this method may terminate the activity, so if the app crashes after running, that\'s why.</string>
+    <string name="wtf_explanation">The documentation states:\n\n\"What a Terrible Failure: Report a condition that should never happen. The error will always be logged at level ASSERT with the call stack. Depending on system configuration, a report may be added to the DropBoxManager and/or the process may be terminated immediately with an error dialog.\"\n\nIn reality there are better ways to report issues internally, like warn or error, but it\'s funny nonetheless that this method exists.</string>
+
+    <string name="fyi_unexpected">Strange, the method should not have been available on your device with Android below 3.0, yet it run as expected. In any case:\n\n%s</string>
+    <string name="fyi_run">The method run...and that\'s it. Unfortunately it\'s a void method which means that it changes some things internally and doesn\'t return anything.</string>
+    <string name="fyi_unavailable">This method was added on Android 3.0, which means that your device do not implement it, and such it crashes.</string>
+    <string name="fyi_crash">Even though your device is above Android 3.0, where this method was introduced, it crashed. Maybe on a future android version it was finally renamed?</string>
+    <string name="fyi_summary">For your information, this easter egg is just a strangely named method, ok thanks.</string>
+    <string name="fyi_explanation">Just a normal function with a really strange name, perhaps the developer forgot to change it and the code review didn\'t noticed it.\nNot much to say here other than saying than naming things are hard.</string>
+    <string name="fyi_function">adapterViewFlipper.[[fyiWillBeAdvancedByHostKThx]]();</string>
 </resources>
