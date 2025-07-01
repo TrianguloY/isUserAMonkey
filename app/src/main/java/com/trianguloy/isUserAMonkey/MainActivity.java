@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.trianguloy.isUserAMonkey.services.LocalService;
 import com.trianguloy.isUserAMonkey.tools.Animations;
 import com.trianguloy.isUserAMonkey.tools.ClickableLinks;
 
@@ -421,14 +422,17 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     }
 
     void runTweet() {
-        // var transact = new Binder().transact(IBinder.TWEET_TRANSACTION, Parcel.obtain(), Parcel.obtain(), 0);
-        txt_result.setText(Integer.toString(IBinder.TWEET_TRANSACTION));
-        txt_comment.setText(R.string.tw_result);
+        LocalService.sendTransaction(IBinder.TWEET_TRANSACTION, this, result -> {
+            txt_result.setText(Boolean.toString(result));
+            txt_comment.setText(R.string.tw_result);
+        });
     }
 
     void runLike() {
-        txt_result.setText(Integer.toString(IBinder.LIKE_TRANSACTION));
-        txt_comment.setText(R.string.lk_result);
+        LocalService.sendTransaction(IBinder.LIKE_TRANSACTION, this, result -> {
+            txt_result.setText(Boolean.toString(result));
+            txt_comment.setText(R.string.lk_result);
+        });
     }
 
     void runDeathStar() {
