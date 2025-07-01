@@ -70,4 +70,25 @@
     <string name="fyi_summary">For your information, this easter egg is just a strangely named method, ok thanks.</string>
     <string name="fyi_explanation">Just a normal function with a really strange name, perhaps the developer forgot to change it and the code review didn\'t noticed it.\nNot much to say here other than saying than naming things are hard.</string>
     <string name="fyi_function">adapterViewFlipper.[[fyiWillBeAdvancedByHostKThx]]();</string>
+    <string name="tw_result">Result</string>
+    <string name="tw_summary">Two constants related to a certain service</string>
+    <string name="tw_explanation">tweet</string>
+    <string name="tw_function">IBinder.TWEET_TRANSACTION</string>
+    <string name="lk_summary">Like</string>
+    <string name="lk_explanation">like</string>
+    <string name="lk_function">IBinder.LIKE_TRANSACTION</string>
+    <string name="lk_result">constant</string>
+    <string name="ds_result">death star</string>
+    <string name="ds_summary">death star</string>
+    <string name="ds_explanation">star wars</string>
+    <string name="ds_function">SensorManager.GRAVITY_DEATH_STAR_I</string>
+    <string name="is_result">island</string>
+    <string name="is_summary">island</string>
+    <string name="is_explanation">lost</string>
+    <string name="is_function">SensorManager.GRAVITY_THE_ISLAND</string>
+    <string name="blink_text">I\'m blinking</string>
+    <string name="blk_result">it blinks</string>
+    <string name="blk_summary">blink</string>
+    <string name="blk_explanation">blink</string>
+    <string name="blk_function"><![CDATA[<blink ...><TextView ... /></blink>]]></string>
 </resources>

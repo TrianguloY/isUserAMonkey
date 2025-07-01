@@ -2,6 +2,8 @@ package com.trianguloy.isUserAMonkey;
 
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static java.util.Map.entry;
 
 import android.annotation.TargetApi;
@@ -12,12 +14,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.UserManager;
 import android.util.Log;
-import android.view.View;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -82,7 +85,12 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             new Egg("⏱", R.string.c_summary, R.string.c_explanation, R.string.c_function, MainActivity::runChronoFinalCountdown),
             new Egg("🎺", R.string.j_summary, R.string.j_explanation, R.string.j_function, MainActivity::runJazzHands),
             new Egg("⁉", R.string.wtf_summary, R.string.wtf_explanation, R.string.wtf_function, MainActivity::runWTF),
-            new Egg("ℹ", R.string.fyi_summary, R.string.fyi_explanation, R.string.fyi_function, MainActivity::runFYI)
+            new Egg("ℹ", R.string.fyi_summary, R.string.fyi_explanation, R.string.fyi_function, MainActivity::runFYI),
+            new Egg("🐦", R.string.tw_summary, R.string.tw_explanation, R.string.tw_function, MainActivity::runTweet),
+            new Egg("♥", R.string.lk_summary, R.string.lk_explanation, R.string.lk_function, MainActivity::runLike),
+            new Egg("🪐", R.string.ds_summary, R.string.ds_explanation, R.string.ds_function, MainActivity::runDeathStar),
+            new Egg("🏝", R.string.is_summary, R.string.is_explanation, R.string.is_function, MainActivity::runIsland),
+            new Egg("❇", R.string.blk_summary, R.string.blk_explanation, R.string.blk_function, MainActivity::runBlink)
     );
 
     record Egg(
@@ -100,6 +108,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     // ------------------- common -------------------
     private TextView txt_result;
     private TextView txt_comment;
+    private LinearLayout ll_result_extra;
     private Egg.Run runAction;
 
     // ------------------- initialization -------------------
@@ -115,6 +124,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         // get common views
         txt_result = this.findViewById(R.id.result);
         txt_comment = this.findViewById(R.id.comment);
+        ll_result_extra = this.findViewById(R.id.result_extra);
 
         // get specific views
         var txt_explanation = this.<TextView>findViewById(R.id.explanation);
@@ -123,10 +133,15 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         var txt_function = this.<TextView>findViewById(R.id.function);
         var txt_expand = this.<TextView>findViewById(R.id.expand);
         txt_expand.setOnClickListener(v -> {
-            v.setVisibility(View.GONE);
-            txt_explanation.setVisibility(View.VISIBLE);
+            v.setVisibility(GONE);
+            txt_explanation.setVisibility(VISIBLE);
         });
         findViewById(R.id.run).setOnClickListener(v -> {
+            // clear
+            ll_result_extra.removeAllViews();
+            ll_result_extra.setVisibility(GONE);
+            txt_result.setVisibility(VISIBLE);
+
             // run
             runAction.run(this);
             // update
@@ -150,6 +165,11 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             var btn = new Button(this);
             btn.setText(egg.btnText);
             btn.setOnClickListener(v -> {
+                // clear
+                ll_result_extra.removeAllViews();
+                ll_result_extra.setVisibility(GONE);
+                txt_result.setVisibility(VISIBLE);
+
                 // set egg specifics
                 txt_summary.setText(egg.summaryRes());
                 ClickableLinks.linkify(txt_summary, this);
@@ -168,8 +188,8 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
                 btn.setTextSize(COMPLEX_UNIT_DIP, 30);
 
                 // reset state
-                txt_explanation.setVisibility(View.GONE);
-                txt_expand.setVisibility(View.VISIBLE);
+                txt_explanation.setVisibility(GONE);
+                txt_expand.setVisibility(VISIBLE);
             });
             ll_buttons.addView(btn);
         }
@@ -398,6 +418,35 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
+    }
+
+    void runTweet() {
+        // var transact = new Binder().transact(IBinder.TWEET_TRANSACTION, Parcel.obtain(), Parcel.obtain(), 0);
+        txt_result.setText(Integer.toString(IBinder.TWEET_TRANSACTION));
+        txt_comment.setText(R.string.tw_result);
+    }
+
+    void runLike() {
+        txt_result.setText(Integer.toString(IBinder.LIKE_TRANSACTION));
+        txt_comment.setText(R.string.lk_result);
+    }
+
+    void runDeathStar() {
+        txt_result.setText(Float.toString(SensorManager.GRAVITY_DEATH_STAR_I));
+        txt_comment.setText(R.string.ds_result);
+    }
+
+    void runIsland() {
+        txt_result.setText(Float.toString(SensorManager.GRAVITY_THE_ISLAND));
+        txt_comment.setText(R.string.is_result);
+    }
+
+    void runBlink() {
+        txt_result.setVisibility(GONE);
+        ll_result_extra.setVisibility(VISIBLE);
+        getLayoutInflater().inflate(R.layout.blink, ll_result_extra);
+
+        txt_comment.setText(R.string.blk_result);
     }
 
 }

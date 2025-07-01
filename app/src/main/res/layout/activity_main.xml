@@ -96,6 +96,14 @@
                     android:layout_weight="1"
                     android:typeface="monospace" />
 
+                <LinearLayout
+                    android:id="@+id/result_extra"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"></LinearLayout>
+
             </LinearLayout>
 
             <TextView
