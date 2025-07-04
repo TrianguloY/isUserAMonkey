@@ -11,9 +11,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Build;
@@ -33,6 +35,7 @@ import com.trianguloy.isUserAMonkey.services.LocalService;
 import com.trianguloy.isUserAMonkey.tools.Animations;
 import com.trianguloy.isUserAMonkey.tools.ClickableLinks;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +68,19 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             entry("FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND", "https://developer.android.com/reference/android/content/pm/PackageManager.html#FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND"),
 
             entry("wtf", "https://developer.android.com/reference/android/util/Log.html#wtf(java.lang.String,%20java.lang.String,%20java.lang.Throwable)"),
+            entry("logcat", "https://developer.android.com/studio/debug/logcat"),
 
             entry("fyiWillBeAdvancedByHostKThx", "https://developer.android.com/reference/android/widget/AdapterViewFlipper.html#fyiWillBeAdvancedByHostKThx()"),
+
+            entry("TWEET_TRANSACTION", "https://developer.android.com/reference/android/os/IBinder.html#TWEET_TRANSACTION"),
+            entry("services", "https://developer.android.com/develop/background-work/services"),
+
+            entry("LIKE_TRANSACTION", "https://developer.android.com/reference/android/os/IBinder.html#LIKE_TRANSACTION"),
+
+            entry("SENSOR_TRICORDER", "https://developer.android.com/reference/android/hardware/SensorManager.html#SENSOR_TRICORDER"),
+            entry("Tricorder", "https://en.wikipedia.org/wiki/Tricorder"),
+
+            entry("GRAVITY_DEATH_STAR_I", "https://developer.android.com/reference/android/hardware/SensorManager.html#GRAVITY_DEATH_STAR_I"),
 
             entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
             entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
@@ -89,6 +103,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             new Egg("ℹ", R.string.fyi_summary, R.string.fyi_explanation, R.string.fyi_function, MainActivity::runFYI),
             new Egg("🐦", R.string.tw_summary, R.string.tw_explanation, R.string.tw_function, MainActivity::runTweet),
             new Egg("♥", R.string.lk_summary, R.string.lk_explanation, R.string.lk_function, MainActivity::runLike),
+            new Egg("📱", R.string.tri_summary, R.string.tri_explanation, R.string.tri_function, MainActivity::runTricorder),
             new Egg("🪐", R.string.ds_summary, R.string.ds_explanation, R.string.ds_function, MainActivity::runDeathStar),
             new Egg("🏝", R.string.is_summary, R.string.is_explanation, R.string.is_function, MainActivity::runIsland),
             new Egg("❇", R.string.blk_summary, R.string.blk_explanation, R.string.blk_function, MainActivity::runBlink)
@@ -151,15 +166,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         });
 
         // prepare about dialog
-        findViewById(R.id.about).setOnClickListener(v -> {
-            var about = getLayoutInflater().inflate(R.layout.about, null);
-            ClickableLinks.linkify(about.findViewById(R.id.about), this);
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setView(about)
-                    .setNegativeButton(android.R.string.ok, null)
-                    .show();
-        });
+        findViewById(R.id.about).setOnClickListener(v -> showAbout(null));
 
         // configure eggs
         for (var egg : eggs) {
@@ -198,15 +205,29 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         // start with the first easter egg already loaded
         ll_buttons.getChildAt(0).performClick();
 
-        // and an animation to indicate there are more elements
-        var scr_parent = (HorizontalScrollView) ll_buttons.getParent();
-        scr_parent.post(() -> {
-            scr_parent.scrollTo(scr_parent.getWidth(), 0);
-            scr_parent.postDelayed(() -> scr_parent.smoothScrollTo(0, 0), 500);
-        });
-
         // init rest
         Animations.enable(findViewById(R.id.parent));
+
+        // start with the about dialog
+        showAbout(dialog -> {
+            // and an animation to indicate there are more elements
+            var scr_parent = (HorizontalScrollView) ll_buttons.getParent();
+            scr_parent.post(() -> {
+                scr_parent.scrollTo(scr_parent.getWidth(), 0);
+                scr_parent.postDelayed(() -> scr_parent.smoothScrollTo(0, 0), 500);
+            });
+        });
+    }
+
+    private void showAbout(DialogInterface.OnDismissListener onDismissListener) {
+        var about = getLayoutInflater().inflate(R.layout.about, null);
+        ClickableLinks.linkify(about.findViewById(R.id.about), this);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.app_name)
+                .setView(about)
+                .setNegativeButton(android.R.string.ok, null)
+                .setOnDismissListener(onDismissListener)
+                .show();
     }
 
     // ------------------- listeners -------------------
@@ -422,17 +443,59 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     }
 
     void runTweet() {
-        LocalService.sendTransaction(IBinder.TWEET_TRANSACTION, this, result -> {
-            txt_result.setText(Boolean.toString(result));
-            txt_comment.setText(R.string.tw_result);
-        });
+        try {
+            LocalService.sendTransaction(IBinder.TWEET_TRANSACTION, this, result -> {
+                txt_result.setText(Boolean.toString(result));
+                txt_comment.setText(result ? R.string.tw_true : R.string.tw_false);
+            });
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+            txt_comment.setText(R.string.tw_unavailable);
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
     }
 
     void runLike() {
-        LocalService.sendTransaction(IBinder.LIKE_TRANSACTION, this, result -> {
-            txt_result.setText(Boolean.toString(result));
-            txt_comment.setText(R.string.lk_result);
-        });
+        try {
+            LocalService.sendTransaction(IBinder.LIKE_TRANSACTION, this, result -> {
+                txt_result.setText(Boolean.toString(result));
+                txt_comment.setText(result ? R.string.lk_true : R.string.lk_false);
+            });
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+            txt_comment.setText(R.string.lk_unavailable);
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
+    }
+
+    void runTricorder() {
+        var sensorManager = getSystemService(SensorManager.class);
+
+        var listener = new SensorListener[1];
+        listener[0] = new SensorListener() {
+            @Override
+            public void onSensorChanged(int sensor, float[] values) {
+                txt_result.setText(Arrays.toString(values));
+                txt_comment.setText(R.string.tri_result);
+                sensorManager.unregisterListener(listener[0]);
+            }
+
+            @Override
+            public void onAccuracyChanged(int sensor, int accuracy) {
+            }
+        };
+        var supported = sensorManager.registerListener(listener[0], SensorManager.SENSOR_TRICORDER, SensorManager.SENSOR_DELAY_NORMAL);
+
+        if (!supported) {
+            txt_result.setText(R.string.unsupported);
+            txt_comment.setText(R.string.tri_unsuported);
+        } else {
+            txt_result.setText(R.string.waiting);
+        }
     }
 
     void runDeathStar() {

@@ -1,23 +1,25 @@
 <resources>
     <string name="app_name">isUserAMonkey &amp; isUserAGoat</string>
-    <string name="about">App developed by [[TrianguloY]].\nThe source code of the app is available on [[GitHub]].\n\nSpecial thanks to StackOverflow \'[[proper-use-cases-for-android-usermanager-isuseragoat]]\', \'[[strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is]]\' and \'[[jokes-and-humour-in-the-public-android-api]]\' for the detailed information. Check also [[Android-Documentation-Easter-Eggs]] where you can find even more easter eggs!\n\nThe monkey emoji in the icon was extracted from the [[Noto Emoji]] font.</string>
+    <string name="about">Di you know that the Android SDK conotains a method called isUserAMonkey? And the gravity of the death star?\nThere are several easter eggs present, here is a mostly complete list of them all, with a full explanation and the ability to trigger/test them yourself!.\n\nApp developed by [[TrianguloY]].\nThe source code of the app is available on [[GitHub]].\n\nSpecial thanks to StackOverflow \'[[proper-use-cases-for-android-usermanager-isuseragoat]]\', \'[[strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is]]\' and \'[[jokes-and-humour-in-the-public-android-api]]\' for the detailed information. Check also [[Android-Documentation-Easter-Eggs]] where you can find even more easter eggs!\n\nThe monkey emoji in the icon was extracted from the [[Noto Emoji]] font.</string>
 
     <string name="expand">Show detailed explanation…</string>
     <string name="press">Press the \'run\' button above to execute the function</string>
     <string name="crash">(code crashed)</string>
     <string name="no_browser">Can\'t open links, is a browser installed?</string>
     <string name="no_value">(no return value)</string>
+    <string name="unsupported">(not supported)</string>
+    <string name="waiting">(waiting for result)</string>
 
-    <string name="m_function">ActivityManager.[[isUserAMonkey]]()</string>
+    <string name="m_function">ActivityManager.[[isUserAMonkey]]();</string>
     <string name="m_summary">The android SDK contains a strange function called \'[[isUserAMonkey]]\'.\nAre you a Monkey? Let\'s find out!</string>
-    <string name="m_explanation">According to the [[isUserAMonkey|official documentation]]:\n\n\"Returns \"true\" if the user interface is currently being messed with by a monkey.\"\n\nInternally this function checks for a test suite program, called \'[[monkey]]\', that tries to press randomly on the screen (like a monkey). This is usually used for automatic tests, so this function could be used to see if such test is running or not.</string>
+    <string name="m_explanation">According to the [[isUserAMonkey|official documentation]]:\n\n<i>\"Returns \"true\" if the user interface is currently being messed with by a monkey.\"</i>\n\nInternally this function checks for a test suite program, called \'[[monkey]]\', that tries to press randomly on the screen (like a monkey). This is usually used for automatic tests, so this function could be used to see if such test is running or not.</string>
     <string name="m_true">The function returned true, you are a monkey!\nThis means that you are using a testing device with the \'[[monkey]]\' testing suite program that presses randomly on the screen. Or perhaps your ROM did this on purpose?</string>
     <string name="m_false">The function returned false, this is the expected result.\nThis means that you are not using a testing device with the \'[[monkey]]\' testing suite program that presses randomly on the screen.</string>
     <string name="m_crash">For some reason the function crashed, this was unexpected, as this function should exists and run correctly. Maybe your ROM messed it somehow?</string>
 
-    <string name="g_function">userManager.[[isUserAGoat]]()</string>
+    <string name="g_function">userManager.[[isUserAGoat]]();</string>
     <string name="g_summary">The Android SDK also contains another strange function called \'[[isUserAGoat]]\'.\nAre you a Goat? Press to check!</string>
-    <string name="g_explanation">This function, which was added in Android 4.2 (previously it didn\'t exist) was, according to the [[isUserAGoat|official documentation]]:\n\n\"Used to determine whether the user making this call is subject to teleportations.\nReturns whether the user making this call is a goat.\".\n\nOriginally the function always returned false, which could had been used as an internal joke, or an easter egg, or perhaps as a tool for coding purposes (the compiler removes code which is known to never execute, like \'if(false)…\' but sometimes you do need that code in the final app, so calling instead a function avoids the compiler code deletion process).\n\nWhen Android 5.0 was released, this function changed to check whether the user had installed the \'[[Goat Simulator]]\' app, probably to confirm the joke, with the message:\n\"As of LOLLIPOP, this method can now automatically identify goats using advanced goat recognition technology.\"\n\nThen, when Android 11 released, this function was changed again to always return false with description\n\"As of R, this method always returns false in order to protect goat privacy.\"\nThis version increased the requirements for apps to detect other installed apps, so most probably this method was changed for the same purpose, to avoid leaking information about an installed app.</string>
+    <string name="g_explanation">This function, which was added in Android 4.2 (previously it didn\'t exist) was, according to the [[isUserAGoat|official documentation]]:\n\n<i>\"Used to determine whether the user making this call is subject to teleportations.\nReturns whether the user making this call is a goat.\"</i>\n\nOriginally the function always returned false, which could had been used as an internal joke, or an easter egg, or perhaps as a tool for coding purposes (the compiler removes code which is known to never execute, like \'if(false)…\' but sometimes you do need that code in the final app, so calling instead a function avoids the compiler code deletion process).\n\nWhen Android 5.0 was released, this function changed to check whether the user had installed the \'[[Goat Simulator]]\' app, probably to confirm the joke, with the message:\n\"As of LOLLIPOP, this method can now automatically identify goats using advanced goat recognition technology.\"\n\nThen, when Android 11 released, this function was changed again to always return false with description\n\"As of R, this method always returns false in order to protect goat privacy.\"\nThis version increased the requirements for apps to detect other installed apps, so most probably this method was changed for the same purpose, to avoid leaking information about an installed app.</string>
     <string name="g_jb">This was unexpected, you are using a device with Android below 4.2 where this function shouldn\'t exist, but it does? Perhaps you are using a ROM which decided to implement it.</string>
     <string name="g_lollipop_true">This was unexpected! You are using a device with Android version between 4.2 and 5.0, where this function was hardcoded to always return false. But it returned true?? Maybe you are using a ROM which changed it?</string>
     <string name="g_lollipop_false">You are using a device with Android version between 4.2 and 5.0, where this function was hardcoded to always return false, so this was the expected result.</string>
@@ -28,73 +30,83 @@
     <string name="g_unavailable">The function is unavailable on Android below 4.2, so unfortunately it crashes when you try to run it.</string>
     <string name="g_crash">This was unexpected, you are using a device with Android above 4.1 where this function should exist, yet it crashed for you. Perhaps it was removed from a future android version?</string>
 
-    <string name="f_function">userManager.hasUserRestriction(UserManager.[[DISALLOW_FUN]])</string>
+    <string name="f_function">userManager.hasUserRestriction(UserManager.[[DISALLOW_FUN]]);</string>
     <string name="f_summary">This constant is present in the Android SDK, is your device restricting the \'fun\'? Hopefully not!</string>
-    <string name="f_explanation">This constant checks for the device policy that \'disallows fun\', which basically disables the Android version easter egg (when you press several times on the android version inside the android settings). It is not sure if there are other third-party apps that react to this policy, maybe this app is the first one?</string>
+    <string name="f_explanation">This constant checks for the device policy that \'disallows fun\', which basically disables the Android version easter egg (when you press several times on the android version inside the android settings). The exact description is:\n\n<i>\"Specifies if the user is not allowed to have fun. In some cases, the device owner may wish to prevent the user from experiencing amusement or joy while using the device. The default value is false.\"</i>\n\nIt is not sure if there are other third-party apps that react to this policy, maybe this app is the first one?</string>
     <string name="f_unavailable">The function is unavailable on Android below 6, so unfortunately it crashes when you try to run it.</string>
     <string name="f_crash">This was unexpected! The function should be available on Android above 5, yet it crashed for you, perhaps it was removed on a future android version?</string>
-    <string name="f_true">Oh no, you are not allowed to have fun, please read this with a monotone inner voice and don\'t smile.</string>
+    <string name="f_true">Oh no, you are not allowed to have fun, please read this with a monotone voice and don\'t smile.</string>
     <string name="f_false">This was the expected outcome. You are allowed to have fun! Let\'s rejoice! This also means you can play/run the android settings easter egg, have you tried it yet?</string>
     <string name="f_m">This was unexpected! The function should be unavailable on Android below 6, yet in your case it didn\'t crash? Maybe your ROM implemented it? In that case: %s</string>
 
-    <string name="c_function">chronometer.[[isTheFinalCountdown]]()</string>
-    <string name="c_summary">When creating a chronometer, you can check if it\'s the final countdown…will it be?</string>
-    <string name="c_explanation">This method is hardcoded to open the Youtube video for the song \'[[The final countdown]]\' by Europe. It even opens it [[FLAG_ACTIVITY_LAUNCH_ADJACENT|adjacent to the current app]], which is not a very used/known feature by developers. It will return true if the video was correctly opened, false if there was en error doing so.</string>
+    <string name="c_function">chronometer.[[isTheFinalCountdown]]();</string>
+    <string name="c_summary">When creating a chronometer, you can check if it\'s the final countdown. I just created one for you…will it be?</string>
+    <string name="c_explanation">This method, with a simple documentation of <i>\"[returns] whether this is the final countdown\"</i> is hardcoded to open the Youtube video for the song \'[[The final countdown]]\' by Europe. It even opens it [[FLAG_ACTIVITY_LAUNCH_ADJACENT|adjacent to the current app]], which is not a very used/known feature by developers. It will return true if the video was correctly opened, false if there was en error doing so.</string>
     <string name="c_true">The method run as expected, the video should have been opened, enjoy!</string>
     <string name="c_false">The method run, but apparently it failed to open the video. Perhaps you don\'t have any app that can open it?</string>
     <string name="c_unavailable">The method is only present on android 8.0 and above, which means that unfortunately on your device it crashes because it doesn\'t exist.</string>
     <string name="c_crash">Even though you are on a device above 8.0, the method crashed on your device, which is odd.</string>
     <string name="c_available">This method should be available only on Android 8.0 and above, yet it didn\'t crash for you? Did your ROM implemented it? In that case: %s</string>
 
-    <string name="j_true">Ya like Jazz? Because your device supports it :P\nAnyway, this was the expected outcome, as nowadays most/all devices support detecting more than 5 fingers on the screen.</string>
-    <string name="j_false">(jazz music stops)\nOh no, you can\'t play jazz on this device!\nThis basically means that your device is not able to detect more than 5 fingers simultaneously.</string>
+    <string name="j_function">packageManager.hasSystemFeature(PackageManager.[[FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND]]);</string>
+    <string name="j_summary">Do you have Jazz Hands? Will your device support them?</string>
+    <string name="j_explanation">This constant\'s name may have been added as a joke, but at least here the description explains it properly:\n\n<i>\"The device\'s touch screen is capable of tracking a full hand of fingers fully independently — that is, 5 or more simultaneous independent pointers.\"</i>\n\nBasically: it\'s a way for applications to know if the device is able to detect at least 5 independent fingers moving on the screen, which is a capability that nowadays should have almost all (if not all) devices. With the developer option to show the pointers on the screen you can easily check it if you want to make sure.</string>
+    <string name="j_true">Ya like Jazz? Because your device supports it :P\nAnyway, this was the expected outcome, as nowadays most/all devices support detecting 5 or more fingers on the screen.</string>
+    <string name="j_false">(jazz music stops)\nOh no, you can\'t play jazz on this device!\nThis basically means that your device is not able to detect 5 or more fingers simultaneously, perhaps only 2?.</string>
+    <string name="j_unavailable">The constant was added on Android 2.3, and your device is so old it still don\'t have it, so it crashes.</string>
     <string name="j_crash">That was unexpected, this constant is available since Android 2.3, but for some reason it crashed on your device. Either you somehow managed to install this app on an unsupported android version, or this constant was removed on a future one.</string>
     <string name="j_g">Unexpected! The constant should not be available on your device under Android 2.3, yet it run without issue, perhaps your ROM implemented it? In that case:\n%s</string>
-    <string name="j_unavailable">The constant was added on Android 2.3, and your device is so old it still don\'t have it, so it crashes.</string>
-    <string name="j_function">packageManager.hasSystemFeature(PackageManager.[[FEATURE_TOUCHSCREEN_MULTITOUCH_JAZZHAND]]);</string>
-    <string name="j_summary">Do you have Jazz Hands? Will your device support it?</string>
-    <string name="j_explanation">This constant\'s name may have been added as a joke, but at least here the description explains it properly:\n\n\"The device\'s touch screen is capable of tracking a full hand of fingers fully independently — that is, 5 or more simultaneous independent pointers.\"\n\nBasically: it\'s a way for applications to know if the device is able to detect at least 5 independent fingers moving on the screen, which is a capability that nowadays should have almost all (if not all) devices.</string>
 
-    <string name="wtf_crash">Something bad happened and the method crashed...for some unknown reason.</string>
-    <string name="wtf_comment">The message was logged, the result shows</string>
-    <string name="wtf_positive">The method run and logged the message as expected. In order to check it you will need to use ADB (or root privileges).</string>
-    <string name="wtf_nonpositive">The method run, but did not logged the message for some reason (or maybe I didn\'t understood the explanation of the return value?)</string>
     <string name="wtf_function">Log.[[wtf]](\"TAG\", \"msg\");</string>
-    <string name="wtf_summary">WTF means \'What a Terrible Failure\', that\'s obvious. Here on Android you can log data representing exactly that.\n\nImportant note: According to the documentation running this method may terminate the activity, so if the app crashes after running, that\'s why.</string>
-    <string name="wtf_explanation">The documentation states:\n\n\"What a Terrible Failure: Report a condition that should never happen. The error will always be logged at level ASSERT with the call stack. Depending on system configuration, a report may be added to the DropBoxManager and/or the process may be terminated immediately with an error dialog.\"\n\nIn reality there are better ways to report issues internally, like warn or error, but it\'s funny nonetheless that this method exists.</string>
+    <string name="wtf_summary">WTF means \'What a Terrible Failure\', duh. Here on Android you can log data representing exactly that.\n\nImportant note: According to the documentation running this method may terminate the activity, so if the app crashes after running, that\'s why.</string>
+    <string name="wtf_explanation">The documentation states:\n\n<i>\"What a Terrible Failure: Report a condition that should never happen. The error will always be logged at level ASSERT with the call stack. Depending on system configuration, a report may be added to the DropBoxManager and/or the process may be terminated immediately with an error dialog.\"</i>\n\nWhen programming on Android, you can use some special logging methods to \'log\' messages on an internal registry, called [[logcat]]. This is a standard practice in frameworks and applications. Furthermore, you can specify the \'severity\' (or level) of the message, in order to filter them later. The severities that android supports, in priority order, are: verbose, debug, info, warn, error and assert. To log them, you have one method for each, with names v, d, i, w, e and wtf respectively. It\'s strange that the assert level doesn\'t follow the convention and isn\'t called \'a\', whoever implemented it may have find it funny and it has stuck since, considering that all methods and severities are on the sdk since Android 1, yet the wtf method was added on Android 2.2!</string>
+    <string name="wtf_crash">Something bad happened and the method crashed…for some unknown reason.</string>
+    <string name="wtf_positive">The method run and logged the message as expected, returning a positive value to indicate success. If you want to check the message yourself, unfortunately you will need to use ADB (or root privileges) to access the [[logcat]].</string>
+    <string name="wtf_nonpositive">The method run, but did not logged the message for some reason (or maybe I didn\'t understand the explanation of the return value? it returned a non-positive value, which should mean failure)</string>
 
-    <string name="fyi_unexpected">Strange, the method should not have been available on your device with Android below 3.0, yet it run as expected. In any case:\n\n%s</string>
-    <string name="fyi_run">The method run...and that\'s it. Unfortunately it\'s a void method which means that it changes some things internally and doesn\'t return anything.</string>
-    <string name="fyi_unavailable">This method was added on Android 3.0, which means that your device do not implement it, and such it crashes.</string>
-    <string name="fyi_crash">Even though your device is above Android 3.0, where this method was introduced, it crashed. Maybe on a future android version it was finally renamed?</string>
-    <string name="fyi_summary">For your information, this easter egg is just a strangely named method, ok thanks.</string>
-    <string name="fyi_explanation">Just a normal function with a really strange name, perhaps the developer forgot to change it and the code review didn\'t noticed it.\nNot much to say here other than saying than naming things are hard.</string>
     <string name="fyi_function">adapterViewFlipper.[[fyiWillBeAdvancedByHostKThx]]();</string>
+    <string name="fyi_summary">For your information, this easter egg is just a strangely named method, OK thanks.</string>
+    <string name="fyi_explanation">Just a normal function with a really strange name, perhaps the developer forgot to change it and the code review didn\'t noticed it.\nNot much to say here other than saying than naming things are hard. For completion, this is the documentation:\n\n<i>\"Called by an AppWidgetHost to indicate that it will be automatically advancing the views of this AdapterViewFlipper by calling AdapterViewFlipper.advance() at some point in the future. This allows AdapterViewFlipper to prepare by no longer Advancing its children.\"</i></string>
+    <string name="fyi_run">The method run…and that\'s it. Unfortunately it\'s a void method which means that it changes some things internally and doesn\'t return anything.</string>
+    <string name="fyi_unexpected">Strange, the method should not have been available on your device with Android below 3.0, yet it run as expected. In any case:\n\n%s</string>
+    <string name="fyi_unavailable">This method was added on Android 3.0, which means that your device does not implement it, and so it crashes.</string>
+    <string name="fyi_crash">Even though your device is above Android 3.0, where this method was introduced, it crashed. Maybe on a future android version it was finally renamed?</string>
 
-    <string name="tw_result">Result</string>
-    <string name="tw_summary">Two constants related to a certain service</string>
-    <string name="tw_explanation">tweet</string>
-    <string name="tw_function">IBinder.TWEET_TRANSACTION</string>
+    <string name="tw_function">service.transact(IBinder.[[TWEET_TRANSACTION]], …);</string>
+    <string name="tw_summary">Services can communicate, this one here apparently \'tweets\'. But that\'s something that birds do, right?</string>
+    <string name="tw_true">Here is your cup of tea ☕. Jolly good message old boy!\n\n(Please check the detailed description for the full explanation and meaning of this result)</string>
+    <string name="tw_false">The code didn\'t crash, but either I made some mistake on the implementation or the service failed. Check the detailed description for more information about what should have happened.</string>
+    <string name="tw_unavailable">Trying to send the transaction crashed. There are quite some steps involved (check the detailed description) so perhaps the mistake is on my part. If so, I\'m sorry.</string>
+    <string name="tw_explanation">One of the method on android to communicate between different parts of the system (either inside applications or between them) is with the concept of [[services]]. You can \'bound\' with a service, and communicate with it. For this communication, the processes transfer some data and a code to indicate which \'action\' the service should do. The code could theoretically be anything (between a range), but Android provides some constants, like PING_TRANSACTION or SHELL_COMMAND_TRANSACTION, for some actions (not sure if Android itself uses them or they are just suggestions for developers). The [[TWEET_TRANSACTION]] (and [[LIKE_TRANSACTION]] from the next easter egg) are two of them.\nThere is nothing special about them as far as I\'m aware, they are just \'there\'.\n\nIn the case of the TWEET_TRANSACTION (which is translated as the code value <i>1599362900</i>, or <i>(\'_\'&lt;&lt;&lt;24)|(\'T\'&lt;&lt;16)|(\'W\'&lt;&lt;8)|\'T\')</i> the documentation says:\n\n<i>\"IBinder protocol transaction code: send a tweet to the target object. The data in the parcel is intended to be delivered to a shared messaging service associated with the object; it can be anything, as long as it is not more than 130 UTF-8 characters to conservatively fit within common messaging services. As part of Build.VERSION_CODES.HONEYCOMB_MR2, all Binder objects are expected to support this protocol for fully integrated tweeting across the platform. To support older code, the default implementation logs the tweet to the main log as a simple emulation of broadcasting it publicly over the Internet.\nAlso, upon completing the dispatch, the object must make a cup of tea, return it to the caller, and exclaim \"jolly good message old boy!\".\"</i>\n\nIn order to properly test this feature, the app implements a very basic service that will just display a toast (a small message at the bottom) with the received code.</string>
 
-    <string name="lk_summary">Like</string>
-    <string name="lk_explanation">like</string>
-    <string name="lk_function">IBinder.LIKE_TRANSACTION</string>
-    <string name="lk_result">constant</string>
+    <string name="lk_function">service.transact(IBinder.[[LIKE_TRANSACTION]], …);</string>
+    <string name="lk_summary">Don\'t forget to give a like!</string>
+    <string name="lk_true">No visible changes (But the app self esteem was improved).\n\n(Please check the detailed description for the full explanation and meaning of this result)</string>
+    <string name="lk_false">The code didn\'t crash, but either I made some mistake on the implementation or the service failed. Check the detailed description for more information about what should have happened.</string>
+    <string name="lk_unavailable">Trying to send the transaction crashed. There are quite some steps involved (check the detailed description) so perhaps the mistake is on my part. If so, I\'m sorry.</string>
+    <string name="lk_explanation">Please check the previous easter egg (🐦 TWEET_TRANSACTION) for the full explanation.\n\nIn the case of the LIKE_TRANSACTION (which is translated as the code value <i>1598835019</i>, or <i>(\'_\'&lt;&lt;24)|(\'L\'&lt;&lt;16)|(\'I\'&lt;&lt;8)|\'K\')</i> the documentation says:\n\n<i>\"IBinder protocol transaction code: tell an app asynchronously that the caller likes it. The app is responsible for incrementing and maintaining its own like counter, and may display this value to the user to indicate the quality of the app. This is an optional command that applications do not need to handle, so the default implementation is to do nothing.\nThere is no response returned and nothing about the system will be functionally affected by it, but it will improve the app\'s self-esteem.\"</i></string>
 
-    <string name="ds_result">death star</string>
+    <string name="tri_function">sensorManager.registerListener(…, SensorManager.[[SENSOR_TRICORDER]], …);</string>
+    <string name="tri_summary">Full alert. Tricorder readings, Mister Spock. Life detection.</string>
+    <string name="tri_unsuported">unsuported</string>
+    <string name="tri_result">result</string>
+    <string name="tri_explanation">explanation</string>
+    <string name="tri_unavailable">crash</string>
+
+    <string name="ds_result">Is the Death Star big enough to have it\'s own gravity? The Android SDK may have the answer</string>
+    <string name="ds_function">SensorManager.[[GRAVITY_DEATH_STAR_I]];</string>
     <string name="ds_summary">death star</string>
     <string name="ds_explanation">star wars</string>
-    <string name="ds_function">SensorManager.GRAVITY_DEATH_STAR_I</string>
 
     <string name="is_result">island</string>
     <string name="is_summary">island</string>
     <string name="is_explanation">lost</string>
-    <string name="is_function">SensorManager.GRAVITY_THE_ISLAND</string>
+    <string name="is_function">SensorManager.GRAVITY_THE_ISLAND;</string>
 
     <string name="blk_result">it blinks</string>
     <string name="blk_summary">blink</string>
     <string name="blk_explanation">blink</string>
-    <string name="blk_function"><![CDATA[<blink ...><TextView ... /></blink>]]></string>
+    <string name="blk_function"><![CDATA[layoutInflater.inflate(\"<blink …><TextView … /></blink>\");]]></string>
     <string name="blink_text">I\'m blinking</string>
 
     <string name="service_toast">Obtained transaction code: %d</string>

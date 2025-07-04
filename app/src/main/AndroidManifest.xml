@@ -9,6 +9,7 @@
         android:icon="@mipmap/ic_launcher">
         <activity android:name="com.trianguloy.isUserAMonkey.MainActivity"
             android:configChanges="orientation|screenLayout"
+            android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
