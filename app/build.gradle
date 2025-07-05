@@ -9,8 +9,8 @@ android {
         applicationId "com.trianguloy.isUserAMonkey"
         minSdkVersion 3 // HorizontalScrollView is only available on sdk 3 :(
         targetSdkVersion 35
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "2.0"
 
     }
 
