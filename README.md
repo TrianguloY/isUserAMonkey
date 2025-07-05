@@ -1,6 +1,8 @@
-# isUserAMonkey & isUserAGoat
+# AndroidSDK easter egg showcase
 
-Android app made by TrianguloY
+![icon](docs/ic_launcher-playstore.png)
+
+Android app made by [TrianguloY](https://github.com/TrianguloY)
 
 Get it on Google Play:\
 https://play.google.com/store/apps/details?id=com.trianguloy.isUserAMonkey \
