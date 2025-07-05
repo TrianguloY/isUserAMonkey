@@ -6,5 +6,5 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/blink_text" />
+        android:text="@string/blk_text" />
 </blink>

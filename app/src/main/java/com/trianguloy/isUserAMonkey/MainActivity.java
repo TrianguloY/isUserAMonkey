@@ -76,11 +76,18 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             entry("services", "https://developer.android.com/develop/background-work/services"),
 
             entry("LIKE_TRANSACTION", "https://developer.android.com/reference/android/os/IBinder.html#LIKE_TRANSACTION"),
+            entry("Twitter", "https://twitter.com/"),
 
             entry("SENSOR_TRICORDER", "https://developer.android.com/reference/android/hardware/SensorManager.html#SENSOR_TRICORDER"),
             entry("Tricorder", "https://en.wikipedia.org/wiki/Tricorder"),
+            entry("Sensor", "https://developer.android.com/reference/kotlin/android/hardware/Sensor"),
 
             entry("GRAVITY_DEATH_STAR_I", "https://developer.android.com/reference/android/hardware/SensorManager.html#GRAVITY_DEATH_STAR_I"),
+
+            entry("GRAVITY_THE_ISLAND", "https://developer.android.com/reference/android/hardware/SensorManager.html#GRAVITY_THE_ISLAND"),
+            entry("Lost", "https://en.wikipedia.org/wiki/Lost_(TV_series)"),
+
+            entry("commit", "https://android.googlesource.com/platform/frameworks/base/+/9c1223a71397b565f38015c07cae57a5015a6500%5E%21"),
 
             entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
             entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
@@ -191,9 +198,12 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
                 // set bigger button
                 for (var i = 0; i < ll_buttons.getChildCount(); i++) {
-                    ((Button) ll_buttons.getChildAt(i)).setTextSize(COMPLEX_UNIT_DIP, 15);
+                    var btnChild = (Button) ll_buttons.getChildAt(i);
+                    btnChild.setTextSize(COMPLEX_UNIT_DIP, 15);
+                    btnChild.setBackground(null);
                 }
                 btn.setTextSize(COMPLEX_UNIT_DIP, 30);
+                btn.setBackgroundColor(0x48888888);
 
                 // reset state
                 txt_explanation.setVisibility(GONE);
@@ -209,13 +219,11 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         Animations.enable(findViewById(R.id.parent));
 
         // start with the about dialog
+        var scr_parent = (HorizontalScrollView) ll_buttons.getParent();
+        scr_parent.post(() -> scr_parent.scrollTo(scr_parent.getWidth(), 0));
         showAbout(dialog -> {
             // and an animation to indicate there are more elements
-            var scr_parent = (HorizontalScrollView) ll_buttons.getParent();
-            scr_parent.post(() -> {
-                scr_parent.scrollTo(scr_parent.getWidth(), 0);
-                scr_parent.postDelayed(() -> scr_parent.smoothScrollTo(0, 0), 500);
-            });
+            scr_parent.postDelayed(() -> scr_parent.smoothScrollTo(0, 0), 500);
         });
     }
 
@@ -444,13 +452,13 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
     void runTweet() {
         try {
-            LocalService.sendTransaction(IBinder.TWEET_TRANSACTION, this, result -> {
+            LocalService.sendTransaction(IBinder.TWEET_TRANSACTION, this, result -> {  // <-- here!
                 txt_result.setText(Boolean.toString(result));
                 txt_comment.setText(result ? R.string.tw_true : R.string.tw_false);
             });
         } catch (Throwable e) {
             txt_result.setText(R.string.crash);
-            txt_comment.setText(R.string.tw_unavailable);
+            txt_comment.setText(R.string.tw_crash);
 
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
@@ -459,13 +467,13 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
     void runLike() {
         try {
-            LocalService.sendTransaction(IBinder.LIKE_TRANSACTION, this, result -> {
+            LocalService.sendTransaction(IBinder.LIKE_TRANSACTION, this, result -> {  // <-- here!
                 txt_result.setText(Boolean.toString(result));
                 txt_comment.setText(result ? R.string.lk_true : R.string.lk_false);
             });
         } catch (Throwable e) {
             txt_result.setText(R.string.crash);
-            txt_comment.setText(R.string.lk_unavailable);
+            txt_comment.setText(R.string.lk_crash);
 
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
@@ -473,47 +481,82 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
     }
 
     void runTricorder() {
-        var sensorManager = getSystemService(SensorManager.class);
+        try {
+            var sensorManager = getSystemService(SensorManager.class);
 
-        var listener = new SensorListener[1];
-        listener[0] = new SensorListener() {
-            @Override
-            public void onSensorChanged(int sensor, float[] values) {
-                txt_result.setText(Arrays.toString(values));
-                txt_comment.setText(R.string.tri_result);
-                sensorManager.unregisterListener(listener[0]);
+            var listener = new SensorListener[1];
+            listener[0] = new SensorListener() {
+                @Override
+                public void onSensorChanged(int sensor, float[] values) {
+                    txt_result.setText(Arrays.toString(values));
+                    txt_comment.setText(R.string.tri_result);
+                    sensorManager.unregisterListener(listener[0]);
+                }
+
+                @Override
+                public void onAccuracyChanged(int sensor, int accuracy) {
+                }
+            };
+            var supported = sensorManager.registerListener(listener[0], SensorManager.SENSOR_TRICORDER, SensorManager.SENSOR_DELAY_NORMAL);  // <-- here!
+
+            if (!supported) {
+                txt_result.setText(R.string.unsupported);
+                txt_comment.setText(R.string.tri_unsuported);
+            } else {
+                txt_result.setText(R.string.waiting);
             }
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+            txt_comment.setText(R.string.tri_crash);
 
-            @Override
-            public void onAccuracyChanged(int sensor, int accuracy) {
-            }
-        };
-        var supported = sensorManager.registerListener(listener[0], SensorManager.SENSOR_TRICORDER, SensorManager.SENSOR_DELAY_NORMAL);
-
-        if (!supported) {
-            txt_result.setText(R.string.unsupported);
-            txt_comment.setText(R.string.tri_unsuported);
-        } else {
-            txt_result.setText(R.string.waiting);
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
         }
     }
 
     void runDeathStar() {
-        txt_result.setText(Float.toString(SensorManager.GRAVITY_DEATH_STAR_I));
-        txt_comment.setText(R.string.ds_result);
+        try {
+            txt_result.setText(Float.toString(SensorManager.GRAVITY_DEATH_STAR_I));  // <-- this!
+            txt_comment.setText(R.string.ds_result);
+
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+            txt_comment.setText(R.string.ds_crash);
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
     }
 
     void runIsland() {
-        txt_result.setText(Float.toString(SensorManager.GRAVITY_THE_ISLAND));
-        txt_comment.setText(R.string.is_result);
+        try {
+            txt_result.setText(Float.toString(SensorManager.GRAVITY_THE_ISLAND));  // <-- this!
+            txt_comment.setText(R.string.is_result);
+
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+            txt_comment.setText(R.string.is_crash);
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
     }
 
     void runBlink() {
-        txt_result.setVisibility(GONE);
-        ll_result_extra.setVisibility(VISIBLE);
-        getLayoutInflater().inflate(R.layout.blink, ll_result_extra);
+        try {
+            txt_result.setVisibility(GONE);
+            ll_result_extra.setVisibility(VISIBLE);
+            getLayoutInflater().inflate(R.layout.blink, ll_result_extra);  // <-- here!
 
-        txt_comment.setText(R.string.blk_result);
+            txt_comment.setText(R.string.blk_result);
+
+        } catch (Throwable e) {
+            txt_result.setText(R.string.crash);
+            txt_comment.setText(R.string.blk_crash);
+
+            txt_comment.append("\n\n");
+            txt_comment.append(e.toString());
+        }
     }
 
 }
