@@ -4,7 +4,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -73,17 +72,9 @@ public class ClickableLinks {
     /**
      * Just a container
      */
-    private static class Match {
-        final int start;
-        final int end;
-        final String tag;
-        final String text;
-
-        Match(int start, int end, String tag, String text) {
-            this.start = start;
-            this.end = end;
-            this.tag = tag;
-            this.text = text == null ? tag : text;
+    private record Match(int start, int end, String tag, String text) {
+        public Match {
+            text = text == null ? tag : text;
         }
     }
 }

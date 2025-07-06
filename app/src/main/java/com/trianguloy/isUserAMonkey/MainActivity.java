@@ -11,10 +11,10 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
             entry("SENSOR_TRICORDER", "https://developer.android.com/reference/android/hardware/SensorManager.html#SENSOR_TRICORDER"),
             entry("Tricorder", "https://en.wikipedia.org/wiki/Tricorder"),
-            entry("Sensor", "https://developer.android.com/reference/kotlin/android/hardware/Sensor"),
+            entry("Sensor", "https://developer.android.com/reference/android/hardware/Sensor"),
 
             entry("GRAVITY_DEATH_STAR_I", "https://developer.android.com/reference/android/hardware/SensorManager.html#GRAVITY_DEATH_STAR_I"),
 
@@ -88,6 +88,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
             entry("Lost", "https://en.wikipedia.org/wiki/Lost_(TV_series)"),
 
             entry("commit", "https://android.googlesource.com/platform/frameworks/base/+/9c1223a71397b565f38015c07cae57a5015a6500%5E%21"),
+            entry("42", "https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#_The_Answer_to_the_Ultimate_Question_of_Life,_the_Universe,_and_Everything_is_42"),
 
             entry("strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is", "https://stackoverflow.com/a/7792165"),
             entry("proper-use-cases-for-android-usermanager-isuseragoat", "https://stackoverflow.com/a/13375461"),
@@ -195,7 +196,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
                 for (var i = 0; i < ll_buttons.getChildCount(); i++) {
                     var btnChild = (Button) ll_buttons.getChildAt(i);
                     btnChild.setTextSize(COMPLEX_UNIT_DIP, 15);
-                    btnChild.setBackground(null);
+                    btnChild.setBackgroundColor(Color.TRANSPARENT);
                 }
                 btn.setTextSize(COMPLEX_UNIT_DIP, 30);
                 btn.setBackgroundColor(0x48888888);
@@ -212,20 +213,20 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         // start with the about dialog
         var scr_parent = (HorizontalScrollView) ll_buttons.getParent();
         scr_parent.post(() -> scr_parent.scrollTo(scr_parent.getWidth(), 0));
-        showAbout(dialog -> {
+        showAbout(() -> {
             // and an animation to indicate there are more elements
             scr_parent.postDelayed(() -> scr_parent.smoothScrollTo(0, 0), 500);
         });
     }
 
-    private void showAbout(DialogInterface.OnDismissListener onDismissListener) {
+    private void showAbout(Runnable onClose) {
         var about = getLayoutInflater().inflate(R.layout.about, null);
         ClickableLinks.linkify(about.findViewById(R.id.about), this);
         new AlertDialog.Builder(this)
                 .setTitle(R.string.app_name)
                 .setView(about)
-                .setNegativeButton(android.R.string.ok, null)
-                .setOnDismissListener(onDismissListener)
+                .setNegativeButton(android.R.string.ok, onClose == null ? null : (d, o) -> onClose.run())
+                .setOnCancelListener(onClose == null ? null : o -> onClose.run())
                 .show();
     }
 
@@ -256,21 +257,37 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
     // ------------------- functions -------------------
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     private void runMonkey() {
         try {
             var isUserAMonkey = ActivityManager.isUserAMonkey(); // <-- this!
             txt_result.setText(Boolean.toString(isUserAMonkey));
-            txt_comment.setText(isUserAMonkey ? R.string.m_true : R.string.m_false);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+                // should have crashed
+                txt_comment.setText(getString(R.string.m_froyo, getString(isUserAMonkey ? R.string.m_true : R.string.m_false)));
+            } else {
+                // run normally
+                txt_comment.setText(isUserAMonkey ? R.string.m_true : R.string.m_false);
+
+            }
 
         } catch (Throwable e) {
             txt_result.setText(R.string.crash);
-            txt_comment.setText(R.string.m_crash);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+                // expected crash, function unavailable
+                txt_comment.setText(R.string.m_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.m_crash);
+            }
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) // to suppress the wanted unavailable error
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void runGoat() {
         try {
             var result = ((UserManager) getSystemService(Context.USER_SERVICE)).isUserAGoat(); // <-- this!
@@ -305,7 +322,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M) // to suppress the wanted unavailable error
+    @TargetApi(Build.VERSION_CODES.M)
     private void runDisallowFun() {
         try {
             var result = ((UserManager) getSystemService(Context.USER_SERVICE)).hasUserRestriction(UserManager.DISALLOW_FUN); // <-- this!
@@ -395,15 +412,31 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     void runWTF() {
         try {
             var result = Log.wtf("TAG", "msg"); // <-- this!
-
             txt_result.setText(Integer.toString(result));
-            txt_comment.setText(result > 0 ? R.string.wtf_positive : R.string.wtf_nonpositive);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+                // constant should not be available
+                txt_comment.setText(getString(R.string.wtf_f, getString(result > 0 ? R.string.wtf_positive : R.string.wtf_nonpositive)));
+            } else {
+                // available
+                txt_comment.setText(result > 0 ? R.string.wtf_positive : R.string.wtf_nonpositive);
+            }
+
 
         } catch (Throwable e) {
-            txt_comment.setText(R.string.wtf_crash);
+            txt_result.setText(R.string.crash);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+                // expected crash, function unavailable
+                txt_comment.setText(R.string.wtf_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.wtf_crash);
+            }
 
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
@@ -441,30 +474,61 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     void runTweet() {
         try {
             LocalService.sendTransaction(IBinder.TWEET_TRANSACTION, this, result -> {  // <-- here!
                 txt_result.setText(Boolean.toString(result));
-                txt_comment.setText(result ? R.string.tw_true : R.string.tw_false);
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+                    // constant should not be available
+                    txt_comment.setText(getString(R.string.tw_unexpected, getString(result ? R.string.tw_true : R.string.tw_false)));
+                } else {
+                    // available
+                    txt_comment.setText(result ? R.string.tw_true : R.string.tw_false);
+                }
             });
+
         } catch (Throwable e) {
             txt_result.setText(R.string.crash);
-            txt_comment.setText(R.string.tw_crash);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+                // expected crash, function unavailable
+                txt_comment.setText(R.string.tw_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.tw_crash);
+            }
 
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     void runLike() {
         try {
             LocalService.sendTransaction(IBinder.LIKE_TRANSACTION, this, result -> {  // <-- here!
                 txt_result.setText(Boolean.toString(result));
-                txt_comment.setText(result ? R.string.lk_true : R.string.lk_false);
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                    // constant should not be available
+                    txt_comment.setText(getString(R.string.lk_unexpected, getString(result ? R.string.lk_true : R.string.lk_false)));
+                } else {
+                    // available
+                    txt_comment.setText(result ? R.string.lk_true : R.string.lk_false);
+                }
             });
         } catch (Throwable e) {
             txt_result.setText(R.string.crash);
-            txt_comment.setText(R.string.lk_crash);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                // expected crash, function unavailable
+                txt_comment.setText(R.string.lk_unavailable);
+            } else {
+                // unexpected crash
+                txt_comment.setText(R.string.lk_crash);
+            }
 
             txt_comment.append("\n\n");
             txt_comment.append(e.toString());
@@ -473,7 +537,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
     void runTricorder() {
         try {
-            var sensorManager = getSystemService(SensorManager.class);
+            SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
             var listener = new SensorListener[1];
             listener[0] = new SensorListener() {
@@ -492,7 +556,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
 
             if (!supported) {
                 txt_result.setText(R.string.unsupported);
-                txt_comment.setText(R.string.tri_unsuported);
+                txt_comment.setText(R.string.tri_unsupported);
             } else {
                 txt_result.setText(R.string.waiting);
             }
