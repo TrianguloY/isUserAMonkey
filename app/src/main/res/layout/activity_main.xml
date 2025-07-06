@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -121,22 +120,11 @@
                 android:background="@android:color/darker_gray" />
 
             <TextView
-                android:id="@+id/expand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:text="@string/expand"
-                tools:visibility="gone" />
-
-            <TextView
                 android:id="@+id/explanation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="@string/m_explanation"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:text="@string/m_explanation" />
 
         </LinearLayout>
     </ScrollView>

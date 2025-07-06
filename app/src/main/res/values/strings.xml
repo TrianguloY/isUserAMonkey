@@ -2,7 +2,6 @@
     <string name="app_name">isUserAMonkey &amp; isUserAGoat</string>
     <string name="about">Did you know that the Android SDK contains a method called isUserAMonkey? And the gravity of the death star?\nThere are several easter eggs present, here is a mostly complete list of them all, with a full explanation and the ability to trigger/test them yourself!.\n\nApp developed by [[TrianguloY]].\nThe source code of the app is available on [[GitHub]].\n\nSpecial thanks to StackOverflow \'[[proper-use-cases-for-android-usermanager-isuseragoat]]\', \'[[strange-function-in-activitymanager-isuseramonkey-what-does-this-mean-what-is]]\' and \'[[jokes-and-humour-in-the-public-android-api]]\' for the detailed information. Check also [[Android-Documentation-Easter-Eggs]] where you can find even more easter eggs!\n\nThe monkey emoji in the icon was extracted from the [[Noto Emoji]] font.</string>
 
-    <string name="expand">Show detailed explanation…</string>
     <string name="press">Press the \'run\' button above to execute the function</string>
     <string name="crash">(code crashed)</string>
     <string name="no_browser">Can\'t open links, is a browser installed?</string>

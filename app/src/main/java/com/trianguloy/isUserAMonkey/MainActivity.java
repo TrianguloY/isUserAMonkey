@@ -154,11 +154,6 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
         var ll_buttons = this.<LinearLayout>findViewById(R.id.buttons);
         var txt_summary = this.<TextView>findViewById(R.id.summary);
         var txt_function = this.<TextView>findViewById(R.id.function);
-        var txt_expand = this.<TextView>findViewById(R.id.expand);
-        txt_expand.setOnClickListener(v -> {
-            v.setVisibility(GONE);
-            txt_explanation.setVisibility(VISIBLE);
-        });
         findViewById(R.id.run).setOnClickListener(v -> {
             // clear
             ll_result_extra.removeAllViews();
@@ -204,10 +199,6 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
                 }
                 btn.setTextSize(COMPLEX_UNIT_DIP, 30);
                 btn.setBackgroundColor(0x48888888);
-
-                // reset state
-                txt_explanation.setVisibility(GONE);
-                txt_expand.setVisibility(VISIBLE);
             });
             ll_buttons.addView(btn);
         }
