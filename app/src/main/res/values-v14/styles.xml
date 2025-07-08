@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="android:Theme.DeviceDefault">
+        <item name="android:textSize">16sp</item>
         <item name="android:imageButtonStyle">?android:attr/buttonBarButtonStyle</item>
         <item name="android:buttonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>

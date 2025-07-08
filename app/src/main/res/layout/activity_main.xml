@@ -12,10 +12,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/about"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="center"
+            android:src="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="&lt;" />
+
         <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scrollbarStyle="outsideInset">
 
             <LinearLayout
                 android:id="@+id/buttons"
@@ -25,11 +42,12 @@
                 android:orientation="horizontal" />
         </HorizontalScrollView>
 
-        <ImageButton
-            android:id="@+id/about"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@android:drawable/ic_menu_info_details" />
+            android:gravity="center"
+            android:padding="5dp"
+            android:text=">" />
 
     </LinearLayout>
 

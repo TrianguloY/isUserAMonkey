@@ -198,7 +198,7 @@ public class MainActivity extends Activity implements ClickableLinks.OnUrlListen
                     btnChild.setTextSize(COMPLEX_UNIT_DIP, 15);
                     btnChild.setBackgroundColor(Color.TRANSPARENT);
                 }
-                btn.setTextSize(COMPLEX_UNIT_DIP, 30);
+                btn.setTextSize(COMPLEX_UNIT_DIP, 40);
                 btn.setBackgroundColor(0x48888888);
             });
             ll_buttons.addView(btn);
