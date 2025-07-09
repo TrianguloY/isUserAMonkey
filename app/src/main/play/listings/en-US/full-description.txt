@@ -1,10 +1,8 @@
-Did you know that in the Android SDK there is a function called 'isUserAMonkey' and another called 'isUserAGoat'?
-https://developer.android.com/reference/android/app/ActivityManager.html#isUserAMonkey()
-https://developer.android.com/reference/android/os/UserManager.html#isUserAGoat()
+Did you know that in the Android SDK there is a function called 'isUserAMonkey'? And a constant called 'GRAVITY_DEATH_STAR_I'?
 
-What are they? What do they do? With this app you can test them and learn a bit about their purpose.
+There are several easter eggs present, here is a mostly complete list of them all, with a full explanation and the ability to trigger/test them yourself!
 
-As usual, this app is extremely small (less than a standard picture), totally free, contains no ads, has no permissions, and their sole purpose it to act as an interactive explanation of two strange easter eggs in the Android SDK.
+As usual, this app is extremely small (less than a standard picture), totally free, contains no ads, has no permissions, and their sole purpose it to act as an interactive explanation of strange easter eggs in the Android SDK.
 
 The more you know.
 
@@ -12,5 +10,3 @@ The more you know.
 
 App developed by TrianguloY (https://github.com/TrianguloY).
 The source code of the app is available on GitHub (https://github.com/TrianguloY/isUserAMonkey).
-Special thanks to StackOverflow https://stackoverflow.com/a/7792165 and https://stackoverflow.com/a/13375461 for the detailed information. 
-The monkey emoji in the icon was extracted from the Noto Emoji font (https://www.google.com/get/noto/help/emoji/).

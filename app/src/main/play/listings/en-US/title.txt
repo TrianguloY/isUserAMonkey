@@ -1,1 +1,1 @@
-isUserAMonkey & isUserAGoat [curiosity]
+AndroidSDK easter egg showcase

@@ -1,2 +1,7 @@
+V 2.0
+- Added 11 new easter eggs
+- Changed app name and icon
+- New layout
+
 V 1.0
 - First release

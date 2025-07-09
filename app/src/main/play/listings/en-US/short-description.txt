@@ -1,1 +1,1 @@
-The android sdk has strange functions called 'isUserAMonkey' and 'isUserAGoat'
+The android sdk has strange elements like 'isUserAMonkey' and 'GRAVITY_DEATH_STAR_I'
